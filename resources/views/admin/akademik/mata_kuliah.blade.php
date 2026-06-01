@@ -73,6 +73,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
+                    <th class="p-4 font-semibold text-center w-16">ID</th>
                     <th class="p-4 font-semibold w-1/3">Kode & Mata Kuliah</th>
                     <th class="p-4 font-semibold text-center w-24">SKS</th>
                     <th class="p-4 font-semibold">Dosen Pengampu</th>
@@ -82,6 +83,9 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($mataKuliah as $mk)
                 <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 text-center font-mono font-bold text-gray-500">
+                        {{ $mk->idMK }}
+                    </td>
                     <td class="p-4">
                         <span class="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider mb-1">{{ $mk->kodeMK }}</span>
                         <div class="font-bold text-gray-800">{{ $mk->namaMK }}</div>
@@ -118,8 +122,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="p-6 text-center text-gray-500">
-                        @if(request('search'))
+                    <td colspan="5" class="p-6 text-center text-gray-500"> @if(request('search'))
                             Pencarian "<b>{{ request('search') }}</b>" tidak ditemukan.
                         @else
                             Belum ada data mata kuliah pada Semester {{ $activeSemester }}.

@@ -4,17 +4,16 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, LogsActivity;
 
     protected $table = 'tb_users';
 
-    // Sesuaikan Primary Key dengan skema baru
     protected $primaryKey = 'user_id';
-
-    // public $timestamps = false; // BARI INI DIHAPUS, biarkan Laravel menangani timestamps otomatis
 
     protected $fillable = [
         'namaLengkapUser',
@@ -29,4 +28,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->useLogName('Admin');
+    }
 }

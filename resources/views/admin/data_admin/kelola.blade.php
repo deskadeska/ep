@@ -52,8 +52,7 @@
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-100">
                     @foreach ($admins as $admin)
-                        <tr class="hover:bg-gray-50 transition">
-                            <!-- Kolom Foto Profil -->
+                        <tr class="hover:bg-gray-50 transition bg-white" id="row-admin-{{ $admin->user_id }}">
                             <td class="p-4">
                                 @if ($admin->fotoUser)
                                     <img src="{{ asset('assets/admin/uploads/users/' . $admin->fotoUser) }}" alt="Foto"
@@ -68,25 +67,15 @@
                                     </div>
                                 @endif
                             </td>
-                            <!-- Kolom Nama -->
                             <td class="p-4">
                                 <div class="font-bold text-gray-800">{{ $admin->namaLengkapUser }}</div>
                                 <div class="text-xs text-gray-500">{{ $admin->jkUser }}</div>
                             </td>
-                            <!-- Kolom Kontak & Role -->
                             <td class="p-4">
                                 <div class="text-gray-800 font-medium">{{ $admin->email }}</div>
                                 <div class="text-xs text-gray-500 mb-1">{{ $admin->noTelpUser }}</div>
-                                @if ($admin->tipeUser == 'Super Admin')
-                                    <span
-                                        class="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Super
-                                        Admin</span>
-                                @else
-                                    <span
-                                        class="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Admin</span>
-                                @endif
+                                <span class="inline-block bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Admin</span>
                             </td>
-                            <!-- Kolom Timestamps -->
                             <td class="p-4">
                                 <div class="text-xs text-gray-600">
                                     <span class="font-semibold text-gray-800">Dibuat:</span><br>
@@ -97,14 +86,21 @@
                                     {{ $admin->updated_at ? $admin->updated_at->translatedFormat('d M Y, H:i') : '-' }}
                                 </div>
                             </td>
-                            <!-- Kolom Aksi -->
                             <td class="p-4 flex items-center justify-center gap-2 mt-2">
+                                <button onclick="toggleSessions({{ $admin->user_id }})"
+                                    class="p-1.5 bg-green-50 text-green-600 rounded hover:bg-green-100 transition"
+                                    title="Lihat Sesi Aktif">
+                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
+
                                 <button onclick="openEditModal({{ json_encode($admin) }})"
                                     class="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition"
-                                    title="Edit">
+                                    title="Edit Data">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                     </svg>
                                 </button>
 
@@ -112,15 +108,52 @@
                                     onsubmit="return confirm('Yakin ingin menghapus data ini beserta fotonya?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
-                                        class="p-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
-                                        title="Hapus">
+                                    <button type="submit" class="p-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition" title="Hapus">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </button>
                                 </form>
+                            </td>
+                        </tr>
+
+                        <tr id="session-row-{{ $admin->user_id }}" class="hidden bg-slate-50 border-b border-gray-300 shadow-inner">
+                            <td colspan="5" class="p-6">
+                                <div class="bg-white rounded border border-gray-200 shadow-sm p-4">
+                                    <h4 class="font-bold text-gray-700 mb-3 text-sm flex items-center gap-2">
+                                        <svg class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                                        Riwayat Sesi Aktif
+                                    </h4>
+
+                                    @if(isset($sessions[$admin->user_id]) && count($sessions[$admin->user_id]) > 0)
+                                        <table class="w-full text-left text-xs">
+                                            <thead class="bg-gray-100 text-gray-600">
+                                                <tr>
+                                                    <th class="p-2 rounded-l">IP Address</th>
+                                                    <th class="p-2">OS / Platform</th>
+                                                    <th class="p-2">Browser</th>
+                                                    <th class="p-2 rounded-r">Aktivitas Terakhir</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-100">
+                                                @foreach($sessions[$admin->user_id] as $s)
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td class="p-2 font-mono text-gray-600">{{ $s->ip_address ?? '-' }}</td>
+                                                        <td class="p-2">
+                                                            <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded">{{ $s->os }}</span>
+                                                        </td>
+                                                        <td class="p-2 text-gray-700 font-medium">{{ $s->browser }}</td>
+                                                        <td class="p-2 text-gray-600">{{ $s->last_activity_formatted }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p class="text-sm text-gray-500 italic p-2 bg-gray-50 rounded border border-dashed border-gray-300">
+                                            Tidak ada sesi aktif yang tercatat untuk admin ini pada saat ini.
+                                        </p>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -291,10 +324,21 @@
             document.getElementById('edit_email').value = adminData.email;
             document.getElementById('edit_telp').value = adminData.noTelpUser;
 
-            // Form password dan Form File input tidak bisa disi via JS demi keamanan browser
-            // User wajib mengunggah/mengetik manual jika ingin mengganti
-
             openModal('modalEdit');
+        }
+
+        // Fungsi baru untuk memunculkan dropdown riwayat sesi
+        function toggleSessions(userId) {
+            const sessionRow = document.getElementById(`session-row-${userId}`);
+            const mainRow = document.getElementById(`row-admin-${userId}`);
+
+            if (sessionRow.classList.contains('hidden')) {
+                sessionRow.classList.remove('hidden');
+                mainRow.classList.add('bg-blue-50'); // Memberikan highlight pada baris utama
+            } else {
+                sessionRow.classList.add('hidden');
+                mainRow.classList.remove('bg-blue-50');
+            }
         }
     </script>
 @endsection

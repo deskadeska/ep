@@ -52,6 +52,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
+                    <th class="p-4 font-semibold w-24 text-center">ID</th>
                     <th class="p-4 font-semibold w-24 text-center">Sampul</th>
                     <th class="p-4 font-semibold w-64">Judul & Kategori</th>
                     <th class="p-4 font-semibold">Deskripsi Singkat</th>
@@ -62,7 +63,10 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($berita as $b)
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="p-4 text-center">
+                    <td class="p-4 text-center font-medium text-gray-500">
+                        {{ $b->idBerita }}
+                    </td>
+                    <td class="p-4">
                         @if($b->fotoBerita)
                             <img src="{{ asset('assets/admin/uploads/berita/' . $b->fotoBerita) }}" alt="Sampul" class="w-20 h-14 rounded-lg object-cover mx-auto border border-gray-200 shadow-sm">
                         @else

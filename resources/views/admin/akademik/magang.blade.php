@@ -31,6 +31,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
+                    <th class="p-4 font-semibold w-24 text-center">ID</th>
                     <th class="p-4 font-semibold w-24 text-center">Foto</th>
                     <th class="p-4 font-semibold">Informasi Instansi</th>
                     <th class="p-4 font-semibold">Pimpinan Instansi</th>
@@ -40,6 +41,9 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($magang as $m)
                 <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 text-center font-mono font-bold text-gray-500">
+                        {{ $m->idMG }}
+                    </td>
                     <td class="p-4 text-center">
                         @if($m->fotoTempatMG)
                             <img src="{{ asset('assets/admin/uploads/magang/' . $m->fotoTempatMG) }}" alt="Foto Instansi" class="w-16 h-16 rounded-lg object-cover mx-auto border border-gray-200 shadow-sm bg-white">

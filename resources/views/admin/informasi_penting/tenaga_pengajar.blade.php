@@ -53,6 +53,7 @@
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
                     <th class="p-4 font-semibold w-10 text-center"></th>
+                    <th class="p-4 font-semibold w-24 text-center">ID</th>
                     <th class="p-4 font-semibold w-24 text-center">Foto</th>
                     <th class="p-4 font-semibold">Informasi Dosen</th>
                     <th class="p-4 font-semibold">Status & Jabatan</th>
@@ -65,6 +66,9 @@
 
                     <td class="p-4 text-center cursor-move text-gray-400 group-hover:text-gray-700 drag-handle" title="Tahan dan geser untuk mengurutkan">
                         <svg class="w-6 h-6 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"/></svg>
+                    </td>
+                    <td class="p-4 text-center font-medium text-gray-500">
+                        {{ $p->idTP }}
                     </td>
 
                     <td class="p-4 text-center">

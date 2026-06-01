@@ -32,7 +32,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
-                    <th class="p-4 font-semibold w-16 text-center">No</th>
+                    <th class="p-4 font-semibold w-16 text-center">ID</th>
                     <th class="p-4 font-semibold">Nama Item / Dokumen</th>
                     <th class="p-4 font-semibold">File Lampiran</th>
                     <th class="p-4 font-semibold text-center w-32">Aksi</th>
@@ -41,7 +41,9 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($details as $index => $d)
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="p-4 text-center text-gray-500">{{ $index + 1 }}</td>
+                    <td class="p-4 text-center font-mono font-bold text-gray-500">
+                        {{ $d->idDKTA }}
+                    </td>
                     <td class="p-4 font-bold text-gray-800">{{ $d->namaKTA }}</td>
                     <td class="p-4">
                         @if($d->urlFile)

@@ -31,7 +31,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
-                    <th class="p-4 font-semibold w-16 text-center">No</th>
+                    <th class="p-4 font-semibold w-16 text-center">ID</th>
                     <th class="p-4 font-semibold">Periode Tahun Akademik</th>
                     <th class="p-4 font-semibold text-center w-32">Aksi</th>
                 </tr>
@@ -40,7 +40,7 @@
                 @forelse($tahunAjaran as $index => $ta)
                 <tr class="hover:bg-gray-50 transition">
                     <td class="p-4 text-center font-medium text-gray-500">
-                        {{ $index + 1 }}
+                        {{ $ta->idTA }}
                     </td>
                     <td class="p-4">
                         <div class="font-bold text-gray-800 text-base">{{ $ta->tahunAkademikTA }}</div>

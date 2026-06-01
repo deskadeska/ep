@@ -31,7 +31,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
-                    <th class="p-4 font-semibold w-16 text-center">No</th>
+                    <th class="p-4 font-semibold w-16 text-center">ID</th>
                     <th class="p-4 font-semibold w-32 text-center">Foto</th>
                     <th class="p-4 font-semibold">Judul & Tanggal</th>
                     <th class="p-4 font-semibold w-32 text-center">Status</th>
@@ -41,7 +41,7 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($dokumentasi as $index => $d)
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="p-4 text-center text-gray-500">{{ $index + 1 }}</td>
+                    <td class="p-4 text-center text-gray-500">{{ $d->idDokumentasi }}</td>
                     <td class="p-4 text-center">
                         <img src="{{ asset('assets/admin/uploads/dokumentasi/' . $d->urlFotoDokumentasi) }}" alt="Foto" class="w-24 h-16 rounded-lg object-cover mx-auto border border-gray-200 shadow-sm">
                     </td>

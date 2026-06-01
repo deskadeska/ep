@@ -11,7 +11,7 @@ class KeperluanTugasAkhirController extends Controller
     public function frontendIndex()
     {
         // Mengambil data kelompok tugas akhir beserta relasi detailnya
-        $keperluan = \App\Models\KeperluanTugasAkhir::with('details')->get();
+        $keperluan = KeperluanTugasAkhir::with('details')->get();
 
         return view('frontend.akademik.keperluan_tugas_akhir', compact('keperluan'));
     }

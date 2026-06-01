@@ -33,6 +33,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
+                    <th class="p-4 font-semibold w-24 text-center">ID</th>
                     <th class="p-4 font-semibold w-24 text-center">Foto</th>
                     <th class="p-4 font-semibold">Penerima & Ajang</th>
                     <th class="p-4 font-semibold">Peringkat & Tahun</th>
@@ -43,7 +44,10 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($prestasi as $p)
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="p-4 text-center">
+                    <td class="p-4 text-center font-medium text-gray-500">
+                        {{ $p->idPM }}
+                    </td>
+                    <td class="p-4">
                         @if($p->fotoUrlPM)
                             <img src="{{ asset('assets/admin/uploads/prestasi/' . $p->fotoUrlPM) }}" alt="Foto" class="w-16 h-12 rounded-lg object-cover mx-auto border border-gray-200 shadow-sm">
                         @else

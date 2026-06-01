@@ -31,7 +31,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
-                    <th class="p-4 font-semibold w-16 text-center">No</th>
+                    <th class="p-4 font-semibold w-16 text-center">ID</th>
                     <th class="p-4 font-semibold w-40 text-center">Thumbnail</th>
                     <th class="p-4 font-semibold">Judul Video & Tautan</th>
                     <th class="p-4 font-semibold w-32 text-center">Status</th>
@@ -41,7 +41,7 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($videos as $index => $v)
                 <tr class="hover:bg-gray-50 transition {{ $v->statusVideo == 'Pinned' ? 'bg-blue-50/30' : '' }}">
-                    <td class="p-4 text-center font-medium text-gray-500">{{ $index + 1 }}</td>
+                    <td class="p-4 text-center font-medium text-gray-500">{{ $v->idVideo }}</td>
                     <td class="p-4 text-center">
                         @php
                             // Mengekstrak ID YouTube dari URL untuk menampilkan Thumbnail

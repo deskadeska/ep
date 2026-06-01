@@ -31,6 +31,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
+                    <th class="p-4 font-semibold">ID</th>
                     <th class="p-4 font-semibold w-32 text-center">Periode</th>
                     <th class="p-4 font-semibold">Ketua Jurusan</th>
                     <th class="p-4 font-semibold">Sekretaris Jurusan</th>
@@ -41,6 +42,9 @@
                 @forelse($pimpinan as $pj)
                 <tr class="hover:bg-gray-50 transition">
 
+                    <td class="p-4 text-center font-medium text-gray-500">
+                        {{ $pj->idPJ }}
+                    </td>
                     <td class="p-4 text-center">
                         <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-md font-bold border border-blue-100 block">
                             {{ $pj->tahunMulaiPJ }} - {{ $pj->tahunSelesaiPJ }}

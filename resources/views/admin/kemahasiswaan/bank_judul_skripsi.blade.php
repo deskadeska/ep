@@ -66,7 +66,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
-                    <th class="p-4 font-semibold w-12 text-center">No</th>
+                    <th class="p-4 font-semibold w-12 text-center">ID</th>
                     <th class="p-4 font-semibold w-36">Tgl Seminar</th>
                     <th class="p-4 font-semibold">Mahasiswa & Judul Skripsi</th>
                     <th class="p-4 font-semibold w-64">Dosen Pembimbing</th>
@@ -77,7 +77,7 @@
                 @forelse($bankJudul as $index => $bjs)
                 <tr class="hover:bg-gray-50 transition">
                     <td class="p-4 text-center font-medium text-gray-500">
-                        {{ $bankJudul->firstItem() + $index }}
+                        {{ $bjs->idBJS }}
                     </td>
                     <td class="p-4">
                         <span class="inline-block bg-[#E8F1F8] text-[#2A6F97] px-2.5 py-1 rounded text-xs font-bold tracking-wide">

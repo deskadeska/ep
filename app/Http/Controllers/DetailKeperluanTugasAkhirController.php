@@ -12,7 +12,7 @@ class DetailKeperluanTugasAkhirController extends Controller
     // Method untuk memaksa unduhan file di frontend (mencegah format .htm)
     public function download($idDKTA)
     {
-        $detail = \App\Models\DetailKeperluanTugasAkhir::findOrFail($idDKTA);
+        $detail = DetailKeperluanTugasAkhir::findOrFail($idDKTA);
 
         if (!$detail->urlFile) {
             return back()->with('error', 'File tidak tersedia.');

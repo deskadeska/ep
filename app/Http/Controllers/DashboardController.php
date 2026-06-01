@@ -4,28 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Spatie\Activitylog\Models\Activity;
+
+// Import model untuk statistik dinamis
+use App\Models\MataKuliah;
+use App\Models\TenagaPengajar;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // TODO: Ganti angka statis ini dengan query Eloquent di masa depan
-        // Contoh: 'total_mhs' => \App\Models\Mahasiswa::count(),
         $data = [
             'tahun_ajaran' => 'Genap 2025/2026',
             'stats' => [
-                'total_mhs' => 453,
-                'total_dosen' => 45,
-                'total_matkul' => 62,
-                'mhs_aktif' => 400,
-                'mhs_lulus' => 80,
-                'pengunjung' => 1330
+                'total_mhs' => 453, // TODO: Ganti dengan App\Models\Mahasiswa::count() jika model sudah ada
+                'total_dosen' => TenagaPengajar::count(), // Dinamis dari tabel tb_tenaga_pengajar
+                'total_matkul' => MataKuliah::count(), // Dinamis dari tabel tb_mata_kuliah
+                'mhs_aktif' => 400, // TODO: Sesuaikan dengan logika mahasiswa aktif
+                'mhs_lulus' => 80,  // TODO: Sesuaikan dengan logika mahasiswa lulus
+                'pengunjung' => 1330 // TODO: Sesuaikan dengan tabel pengunjung/visitor
             ],
             'system' => [
                 'status' => 'Online',
-                'user_aktif' => 12, // Bisa diambil dari tabel sessions yang kita buat sebelumnya
+                'user_aktif' => DB::table('sessions')->count(), // Dinamis menghitung jumlah sesi aktif saat ini
                 'last_backup' => 'Belum ada backup'
             ]
         ];
@@ -41,6 +45,9 @@ class DashboardController extends Controller
             }
         }
 
+        // Mengambil 20 log aktivitas terbaru beserta data relasi admin yang melakukan aksi (causer)
+        $data['activities'] = Activity::with('causer')->latest()->limit(20)->get();
+
         return view('admin.dashboard', $data);
     }
 
@@ -50,7 +57,7 @@ class DashboardController extends Controller
         $host = env('DB_HOST', '127.0.0.1');
         $username = env('DB_USERNAME', 'root');
         $password = env('DB_PASSWORD', '');
-        $database = env('DB_DATABASE', 'db_ekopem');
+        $database = env('DB_DATABASE', 'ekopem');
 
         // 2. Siapkan nama file dan direktori
         $fileName = 'backup_' . $database . '_' . date('Y-m-d_H-i-s') . '.sql';
@@ -68,7 +75,6 @@ class DashboardController extends Controller
 
         try {
             // 4. Eksekusi eksternal melalui shell
-            // Menggunakan exec() murni untuk dukungan multi-platform yang lebih mudah
             exec($command . ' 2>&1', $output, $returnVar);
 
             if ($returnVar !== 0) {

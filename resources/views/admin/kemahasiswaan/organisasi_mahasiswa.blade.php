@@ -33,6 +33,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
+                    <th class="p-4 font-semibold w-24 text-center">ID</th>
                     <th class="p-4 font-semibold w-24 text-center">Logo</th>
                     <th class="p-4 font-semibold">Nama & Deskripsi</th>
                     <th class="p-4 font-semibold w-32 text-center">Foto Anggota</th>
@@ -42,6 +43,9 @@
             <tbody class="text-sm divide-y divide-gray-100">
                 @forelse($ormawa as $o)
                 <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 text-center font-medium text-gray-500">
+                        {{ $o->idOrmawa }}
+                    </td>
                     <td class="p-4 text-center">
                         @if($o->fotoLogoUrlOrmawa)
                             <img src="{{ asset('assets/admin/uploads/ormawa/' . $o->fotoLogoUrlOrmawa) }}" alt="Logo" class="w-16 h-16 rounded-full object-cover mx-auto border border-gray-200 shadow-sm bg-white">

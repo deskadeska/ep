@@ -31,7 +31,7 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-50 border-b border-gray-200 text-sm" style="color: var(--subheadline);">
-                    <th class="p-4 font-semibold w-16 text-center">No</th>
+                    <th class="p-4 font-semibold w-16 text-center">ID</th>
                     <th class="p-4 font-semibold w-40">Tanggal</th>
                     <th class="p-4 font-semibold">Nama & Deskripsi Kegiatan</th>
                     <th class="p-4 font-semibold w-40 text-center">Status / Info</th>
@@ -48,7 +48,7 @@
                 @endphp
 
                 <tr class="hover:bg-gray-50 transition {{ $jk->statusJK ? 'bg-gray-50/50 opacity-80' : '' }}">
-                    <td class="p-4 text-center font-medium text-gray-500">{{ $index + 1 }}</td>
+                    <td class="p-4 text-center font-medium text-gray-500">{{ $jk->idJK }}</td>
 
                     <td class="p-4">
                         <div class="font-bold text-gray-800">{{ \Carbon\Carbon::parse($jk->tanggalJK)->translatedFormat('d M Y') }}</div>

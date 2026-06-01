@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Jurusan — Ekonomi Pembangunan UNPAR</title>
+    <title>Sejarah Jurusan — Ekonomi Pembangunan UPR</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,10 +74,9 @@
         <div class="relative max-w-7xl mx-auto text-center z-10">
             <p class="text-sm font-bold uppercase tracking-widest mb-3 reveal active" style="color: var(--accent);">
                 Tentang Kami</p>
-            <h1 class="text-4xl md:text-6xl font-bold mb-4 reveal active text-white">Profil Jurusan</h1>
-            <p class="max-w-2xl mx-auto font-medium reveal active delay-1" style="color: var(--soft-bg);">
-                Mengenal lebih dekat Fakultas Ekonomi dan Bisnis Universitas Palangka Raya serta visi besar yang kami
-                usung.
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 reveal active text-white">Sejarah Jurusan</h1>
+            <p class="max-w-3xl mx-auto font-medium reveal active delay-1 leading-relaxed text-sm md:text-base" style="color: var(--soft-bg);">
+                Sejarah Jurusan Ekonomi Pembangunan menyatu menjadi satu dengan sejarah Fakultas Ekonomi dan Bisnis Universitas Palangka Raya, karena jurusan ini sudah ada sejak pertama kali fakultas resmi diresmikan dan didirikan.
             </p>
         </div>
     </section>
@@ -88,13 +87,11 @@
             <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 reveal">
                 <div class="w-full md:w-5/12">
                     <div class="relative rounded-2xl overflow-hidden shadow-lg border-2 border-[var(--soft-bg)]">
-                        <img src="{{ asset('assets/images/fakultas-1.jpg') }}" alt="FEB UPR"
+                        <img src="{{ asset('assets/images/feb_potrait.jpeg') }}" alt="FEB UPR"
                             class="w-full aspect-video object-cover">
                     </div>
                 </div>
                 <div class="w-full md:w-7/12">
-                    <span class="subheadline-label">Profil</span>
-                    <h2 class="text-2xl md:text-3xl font-bold mb-4">Fakultas Ekonomi dan Bisnis UPR</h2>
                     <p class="text-base leading-relaxed text-[var(--medium-neutral)] text-justify">
                         Fakultas Ekonomi dan Bisnis Universitas Palangka Raya berdiri bersamaan
                         dengan berdirinya Unversitas Palangka Raya, melalui Surat Keputusan (SK) Menteri
@@ -105,13 +102,9 @@
                         berdirinya Fakultas Ekonomi dan Bisnis UPR masih terdiri dari 2 (dua) jurusan yaitu
                         Jurusan Ekonomi Umum yang sekarang dikenal dengan Jurusan Ekonomi
                         Pembangunan dan Jurusan Ekonomi Perusahaan yang kemudian berganti nama
-                        menjandi Jurusan Manajemen. <br>
-                        Fakultas Ekonomi dan Bisnis UPR setiap tahun mengalami perkembangan, baik
-                        dari segi kuantitas maupun dari segi kualitas sesuai dengan perkembangan fakultas
-                        dan kebutuhan akan pembangunan. Pada tahun 1999 dibuka program studi baru
-                        yakni Jurusan Akuntansi, sehingga Fakultas Ekonomi dan Bisnis saat ini terdiri dari 3
-                        (tiga) jurusan yakni Jurusan Ekonomi Pembangunan, Jurusan Manajemen, dan
-                        Jurusan Akuntansi.
+                        menjandi Jurusan Manajemen. Fakultas Ekonomi dan Bisnis UPR setiap tahun mengalami
+                        perkembangan, baik dari segi kuantitas maupun dari segi kualitas sesuai dengan
+                        perkembangan fakultas dan kebutuhan akan pembangunan.
                     </p>
                 </div>
             </div>
@@ -119,12 +112,16 @@
             <div class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 reveal delay-1">
                 <div class="w-full md:w-5/12">
                     <div class="relative rounded-2xl overflow-hidden shadow-lg border-2 border-[var(--soft-bg)]">
-                        <img src="{{ asset('assets/images/dekan.jpg') }}" alt="Dekan FEB UPR"
+                        <img src="{{ asset('assets/images/ekopem.jpg') }}" alt="Dekan FEB UPR"
                             class="w-full aspect-video object-cover">
                     </div>
                 </div>
                 <div class="w-full md:w-7/12">
                     <p class="text-base leading-relaxed text-[var(--medium-neutral)] text-justify">
+                        Pada tahun 1999 dibuka program studi baru
+                        yakni Jurusan Akuntansi, sehingga Fakultas Ekonomi dan Bisnis saat ini terdiri dari 3
+                        (tiga) jurusan yakni <strong>Jurusan Ekonomi Pembangunan</strong>, Jurusan Manajemen, dan
+                        Jurusan Akuntansi.
                         Fakultas Ekonomi sebagai salah satu Fakultas tertua di lingkungan Universitas
                         Palangka Raya, Fakultas Ekonomi juga dipercayakan untuk membina embrio Fakultas
                         baru di Iingkungan Universitas Palangka Raya, yakni Jurusan Hukum dan Jurusan
