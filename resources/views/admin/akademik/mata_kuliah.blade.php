@@ -14,7 +14,11 @@
 
 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6">
     <form method="GET" action="{{ route('admin.akademik.matakuliah') }}" class="flex flex-col lg:flex-row gap-4 items-center">
-        <input type="hidden" name="semester" value="{{ $activeSemester }}">
+
+        {{-- Jika sedang mencari, hapus filter semester agar pencarian bersifat global di semua semester --}}
+        @if(!request('search'))
+            <input type="hidden" name="semester" value="{{ $activeSemester }}">
+        @endif
 
         <div class="w-full lg:w-1/2 relative">
             <svg class="w-5 h-5 absolute left-3 top-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
@@ -37,7 +41,7 @@
             </button>
 
             @if(request('search') || request('sort_by'))
-                <a href="{{ route('admin.akademik.matakuliah', ['semester' => $activeSemester]) }}" class="bg-red-50 text-red-600 hover:bg-red-100 font-medium py-2 px-3 rounded-lg text-sm transition border border-red-200" title="Reset Pencarian">
+                <a href="{{ route('admin.akademik.matakuliah') }}" class="bg-red-50 text-red-600 hover:bg-red-100 font-medium py-2 px-3 rounded-lg text-sm transition border border-red-200" title="Reset Pencarian">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                 </a>
             @endif
@@ -60,14 +64,19 @@
 
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-    <div class="flex overflow-x-auto gap-2 p-4 border-b border-gray-100 hide-scrollbar">
-        @for($i = 1; $i <= 8; $i++)
-            <a href="{{ request()->fullUrlWithQuery(['semester' => $i]) }}"
-               class="px-5 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors {{ $activeSemester == $i ? 'bg-[#1E3A5F] text-white shadow-md' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
-                Semester {{ $i }}
+    {{-- FITUR: Jangan tampilkan tombol semester jika sedang melakukan pencarian --}}
+    @if(!request('search'))
+    <div class="flex overflow-x-auto gap-2 p-4 border-b border-gray-100 hide-scrollbar bg-gray-50/50">
+        @forelse($availableSemesters as $sem)
+            <a href="{{ route('admin.akademik.matakuliah', ['semester' => $sem]) }}"
+               class="px-5 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-all {{ $activeSemester == $sem ? 'bg-[#1E3A5F] text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100' }}">
+                Semester {{ $sem }}
             </a>
-        @endfor
+        @empty
+            <span class="text-sm text-gray-400 italic px-2">Tidak ada semester yang terdaftar</span>
+        @endforelse
     </div>
+    @endif
 
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
@@ -89,6 +98,10 @@
                     <td class="p-4">
                         <span class="inline-block bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider mb-1">{{ $mk->kodeMK }}</span>
                         <div class="font-bold text-gray-800">{{ $mk->namaMK }}</div>
+                        {{-- Menampilkan info semester jika sedang dalam mode pencarian global --}}
+                        @if(request('search'))
+                            <div class="text-[11px] text-gray-500 mt-1 font-medium">Semester: {{ $mk->semesterMK }}</div>
+                        @endif
                     </td>
                     <td class="p-4 text-center font-bold text-gray-700">{{ $mk->sksMK }}</td>
                     <td class="p-4">
@@ -122,8 +135,13 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="p-6 text-center text-gray-500"> @if(request('search'))
-                            Pencarian "<b>{{ request('search') }}</b>" tidak ditemukan.
+                    <td colspan="5" class="p-12 text-center text-gray-500">
+                        @if(request('search'))
+                            <div class="flex flex-col items-center">
+                                <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <p>Mata kuliah "<b>{{ request('search') }}</b>" tidak ditemukan di semester manapun.</p>
+                                <a href="{{ route('admin.akademik.matakuliah') }}" class="mt-4 text-[#2A6F97] font-bold text-xs underline">Kembali ke Tampilan Awal</a>
+                            </div>
                         @else
                             Belum ada data mata kuliah pada Semester {{ $activeSemester }}.
                         @endif
@@ -162,7 +180,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Semester <span class="text-red-500">*</span></label>
-                        <input type="number" name="semesterMK" min="1" max="8" value="{{ $activeSemester }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541]">
+                        <input type="number" name="semesterMK" min="1" max="8" value="{{ request('search') ? 1 : $activeSemester }}" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541]">
                     </div>
                 </div>
 
@@ -175,7 +193,7 @@
                         </button>
                     </div>
                     <div id="container_tambah" class="space-y-3">
-                        </div>
+                    </div>
                 </div>
             </div>
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-2 sticky bottom-0">
@@ -227,7 +245,7 @@
                         </button>
                     </div>
                     <div id="container_edit" class="space-y-3">
-                        </div>
+                    </div>
                 </div>
             </div>
             <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-2 sticky bottom-0">
@@ -280,6 +298,7 @@
                 addDosenRow('container_edit', tp.idTP, tp.pivot.rolePMK);
             });
         } else {
+            // Memberikan baris kosong wajib diisi jika data dosen sebelumnya kebetulan kosong
             addDosenRow('container_edit');
         }
 
@@ -297,6 +316,7 @@
             optionsHtml += `<option value="${d.idTP}" ${isSelected}>${d.namaTP}</option>`;
         });
 
+        // Penggunaan select yang memiliki atribut required agar admin tidak bisa submit tanpa memilih dosen
         row.innerHTML = `
             <select name="idTP[]" required class="w-full sm:flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] bg-white">
                 ${optionsHtml}

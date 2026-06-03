@@ -17,7 +17,6 @@ return new class extends Migration
         });
 
         Schema::create('tb_mata_kuliah', function (Blueprint $table) {
-            // 1. Kolom Data Utama
             $table->id('idMK');
             $table->string('kodeMK')->unique();
             $table->string('namaMK');

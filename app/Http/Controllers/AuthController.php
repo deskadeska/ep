@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // Kunci rahasia untuk dekripsi (Sama dengan yang ada di JS)
-    // Di tahap production, letakkan ini di file .env (misal: env('CLIENT_SECRET_KEY'))
-    private $secretKey = 'EkopemUprSecretKey2026AdminLogin';
-
     public function showLoginForm()
     {
         return view('admin.auth.login');
@@ -18,41 +17,48 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // 1. Ambil data terenkripsi dari input hidden
-        $encryptedPayload = $request->input('encrypted_payload');
+        // 1. Validasi input menggunakan Form Validation resmi Laravel
+        $request->validate([
+            'identifier' => ['required', 'string'],
+            'password'   => ['required', 'string'],
+        ], [
+            'identifier.required' => 'Email atau nomor telepon wajib diisi.',
+            'password.required'   => 'Password wajib diisi.',
+        ]);
 
-        if (!$encryptedPayload) {
-            return back()->with('error', 'Payload tidak valid.');
+        // 2. Terapkan Rate Limiting: Maks 5 percobaan per 1 menit per IP + identifier
+        $throttleKey = Str::lower($request->input('identifier')) . '|' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, maxAttempts: 5)) {
+            $seconds = RateLimiter::availableIn($throttleKey);
+
+            throw ValidationException::withMessages([
+                'identifier' => "Terlalu banyak percobaan login. Silakan coba lagi dalam {$seconds} detik.",
+            ]);
         }
 
-        // 2. Dekripsi data menggunakan OpenSSL (mendukung hasil dari CryptoJS)
-        $decryptedJson = openssl_decrypt(
-            $encryptedPayload,
-            'AES-256-ECB',
-            $this->secretKey,
-            0 // Flag 0 wajib karena output CryptoJS.toString() adalah Base64
-        );
-
-        $credentials = json_decode($decryptedJson, true);
-
-        if (!$credentials || !isset($credentials['identifier']) || !isset($credentials['password'])) {
-            return back()->with('error', 'Gagal mendekripsi data kredensial.');
-        }
-
-        $identifier = $credentials['identifier'];
-        $password = $credentials['password'];
+        $identifier = $request->input('identifier');
+        $password   = $request->input('password');
 
         // 3. Deteksi apakah input berupa Email atau Nomor Telepon
-        // Jika input hanya berisi angka, asumsikan itu nomor telepon
         $loginType = filter_var($identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'noTelpUser';
 
         // 4. Proses Autentikasi
         if (Auth::attempt([$loginType => $identifier, 'password' => $password])) {
+            // Reset penghitung rate limiter jika login berhasil
+            RateLimiter::clear($throttleKey);
             $request->session()->regenerate();
+
             return redirect()->intended('/admin/dashboard');
         }
 
-        return back()->with('error', 'Kredensial tidak cocok dengan data kami.');
+        // 5. Tambah hitungan percobaan gagal pada rate limiter
+        RateLimiter::hit($throttleKey, 60);
+
+        // 6. Kembalikan error validasi (tidak mengungkap kolom mana yang salah)
+        throw ValidationException::withMessages([
+            'identifier' => 'Kredensial tidak cocok dengan data kami.',
+        ]);
     }
 
     public function logout(Request $request)

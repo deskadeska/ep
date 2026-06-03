@@ -17,7 +17,7 @@ class KeperluanTugasAkhirController extends Controller
     }
     public function index()
     {
-        $keperluan = KeperluanTugasAkhir::orderBy('idKTA', 'desc')->get();
+        $keperluan = KeperluanTugasAkhir::orderBy('idKTA', 'asc')->get();
         return view('admin.akademik.keperluan_tugas_akhir', compact('keperluan'));
     }
 

@@ -52,36 +52,40 @@ class MataKuliahController extends Controller
         return view('frontend.akademik.mata_kuliah', compact('mataKuliah', 'listDosen', 'stats'));
     }
 
-    public function index(Request $request)
+public function index(Request $request)
     {
         $query = MataKuliah::with(['tenagaPengajar']);
 
-        if ($request->has('search') && $request->search != '') {
-            $search = $request->search;
+        // AMBIL SEMESTER YANG TERSEDIA SAJA (Hapus semester kosong dari navigasi)
+        $availableSemesters = MataKuliah::distinct()
+                                        ->orderBy('semesterMK', 'asc')
+                                        ->pluck('semesterMK');
+
+        $search = $request->input('search');
+        $activeSemester = $request->input('semester', $availableSemesters->first() ?? 1);
+
+        if ($search != '') {
+            // Pencarian Global (Mengabaikan filter semester saat mencari)
             $query->where(function($q) use ($search) {
                 $q->where('kodeMK', 'like', '%' . $search . '%')
                   ->orWhere('namaMK', 'like', '%' . $search . '%');
             });
+        } else {
+            // Filter semester hanya aktif jika TIDAK sedang mencari
+            $query->where('semesterMK', $activeSemester);
         }
 
-        // Default ke Semester 1, wajib angka.
-        $activeSemester = $request->input('semester', '1');
-        $query->where('semesterMK', $activeSemester);
-
-        // HANYA ADA 2 OPSI URUTKAN: Bobot SKS dan Kode MK
         $sortBy = $request->input('sort_by', 'sksMK');
         $sortOrder = $request->input('sort_order', 'asc');
 
-        if (in_array($sortBy, ['kodeMK', 'sksMK']) && in_array($sortOrder, ['asc', 'desc'])) {
+        if (in_array($sortBy, ['kodeMK', 'sksMK'])) {
             $query->orderBy($sortBy, $sortOrder);
-        } else {
-            $query->orderBy('sksMK', 'asc'); // DEFAULT SKS Naik (1, 2, 3...)
         }
 
         $mataKuliah = $query->get();
         $dosen = TenagaPengajar::orderBy('namaTP', 'asc')->get();
 
-        return view('admin.akademik.mata_kuliah', compact('mataKuliah', 'dosen', 'activeSemester'));
+        return view('admin.akademik.mata_kuliah', compact('mataKuliah', 'dosen', 'activeSemester', 'availableSemesters'));
     }
 
     public function store(Request $request)
@@ -91,26 +95,24 @@ class MataKuliahController extends Controller
             'namaMK' => 'required|string|max:255',
             'sksMK' => 'required|integer|min:1|max:6',
             'semesterMK' => 'required|integer|min:1|max:8',
-            'idTP' => 'nullable|array',
-            'idTP.*' => 'exists:tb_tenaga_pengajar,idTP',
-            'rolePMK' => 'nullable|array',
+            // VALIDASI DOSEN: Wajib ada (min:1)
+            'idTP' => 'required|array|min:1',
+            'idTP.*' => 'required|exists:tb_tenaga_pengajar,idTP',
+            'rolePMK' => 'required|array|min:1',
+        ], [
+            'idTP.required' => 'Mata kuliah wajib memiliki minimal satu dosen pengampu.',
+            'idTP.*.required' => 'Pilih nama dosen pada baris yang tersedia.'
         ]);
 
-        // Simpan Data Mata Kuliah
         $mk = MataKuliah::create($request->only('kodeMK', 'namaMK', 'sksMK', 'semesterMK'));
 
-        // Sinkronisasi data ke pivot table
-        if ($request->has('idTP')) {
-            $syncData = [];
-            foreach ($request->idTP as $index => $idTP) {
-                if ($idTP) {
-                    $role = $request->rolePMK[$index] ?? 'Pengampu';
-                    $syncData[$idTP] = ['rolePMK' => $role];
-                }
+        $syncData = [];
+        foreach ($request->idTP as $index => $idTP) {
+            if ($idTP) {
+                $syncData[$idTP] = ['rolePMK' => $request->rolePMK[$index] ?? 'Pengampu'];
             }
-            // attach/sync akan memotong duplikasi idTP berdasarkan proteksi array key
-            $mk->tenagaPengajar()->sync($syncData);
         }
+        $mk->tenagaPengajar()->sync($syncData);
 
         return back()->with('success', 'Data Mata Kuliah berhasil ditambahkan.');
     }
@@ -124,28 +126,24 @@ class MataKuliahController extends Controller
             'namaMK' => 'required|string|max:255',
             'sksMK' => 'required|integer|min:1|max:6',
             'semesterMK' => 'required|integer|min:1|max:8',
-            'idTP' => 'nullable|array',
-            'idTP.*' => 'exists:tb_tenaga_pengajar,idTP',
-            'rolePMK' => 'nullable|array',
+            // VALIDASI DOSEN: Jangan biarkan kosong saat edit
+            'idTP' => 'required|array|min:1',
+            'idTP.*' => 'required|exists:tb_tenaga_pengajar,idTP',
+            'rolePMK' => 'required|array|min:1',
+        ], [
+            'idTP.required' => 'Dosen pengampu tidak boleh dikosongkan.',
+            'idTP.*.required' => 'Pilih nama dosen atau hapus baris yang tidak digunakan.'
         ]);
 
-        // Update data dasar
         $mk->update($request->only('kodeMK', 'namaMK', 'sksMK', 'semesterMK'));
 
-        // Sinkronisasi relasi Dosen Pengampu & Role
-        if ($request->has('idTP')) {
-            $syncData = [];
-            foreach ($request->idTP as $index => $idTP) {
-                if ($idTP) {
-                    $role = $request->rolePMK[$index] ?? 'Pengampu';
-                    $syncData[$idTP] = ['rolePMK' => $role];
-                }
+        $syncData = [];
+        foreach ($request->idTP as $index => $idTP) {
+            if ($idTP) {
+                $syncData[$idTP] = ['rolePMK' => $request->rolePMK[$index] ?? 'Pengampu'];
             }
-            $mk->tenagaPengajar()->sync($syncData);
-        } else {
-            // Jika form dikosongkan secara penuh, hapus semua pengampu
-            $mk->tenagaPengajar()->sync([]);
         }
+        $mk->tenagaPengajar()->sync($syncData);
 
         return back()->with('success', 'Data Mata Kuliah berhasil diperbarui.');
     }
@@ -153,8 +151,7 @@ class MataKuliahController extends Controller
     public function destroy($id)
     {
         $mk = MataKuliah::findOrFail($id);
-        $mk->delete(); // Karena menggunakan cascadeOnDelete di database, relasi pivot akan otomatis terhapus
-
+        $mk->delete();
         return back()->with('success', 'Data Mata Kuliah berhasil dihapus.');
     }
 }

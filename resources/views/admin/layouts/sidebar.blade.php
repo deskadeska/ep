@@ -1,9 +1,9 @@
 <aside
     class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-[#D1D5DB] overflow-y-auto flex flex-col z-40 shadow-sm transition-transform duration-300">
-    <div class="sticky top-0 bg-white z-10 px-6 py-5 border-b border-[#D1D5DB]">
+    <a href="{{ url('admin/dashboard') }}" class="block sticky top-0 bg-white z-10 px-6 py-5 border-b border-[#D1D5DB] hover:bg-gray-50 transition-colors cursor-pointer">
         <h2 class="text-xl font-bold" style="color: var(--navy, #1E3A5F);">Admin Portal</h2>
         <p class="text-xs font-medium" style="color: var(--caption, #6B7280);">Ekonomi Pembangunan</p>
-    </div>
+    </a>
 
     <nav class="flex-1 px-4 py-6 space-y-8">
 

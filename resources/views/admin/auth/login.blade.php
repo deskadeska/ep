@@ -6,13 +6,10 @@
     <title>Login Admin - Ekopem UPR</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Library CryptoJS untuk enkripsi sisi Client -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'DM Sans', sans-serif;
-            /* Background gambar atau gradient untuk menonjolkan efek Glassmorphism */
             background: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
         }
@@ -37,68 +34,77 @@
             <p class="text-sm opacity-80">Jurusan Ekonomi Pembangunan UPR</p>
         </div>
 
+        {{-- Notifikasi Sukses (misal: setelah logout) --}}
+        @if(session('success'))
+            <div class="bg-green-500 bg-opacity-70 border border-green-300 text-white px-4 py-3 rounded-lg mb-6 text-sm">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        {{-- Notifikasi Error Umum --}}
         @if(session('error'))
-            <div class="bg-red-500 bg-opacity-70 border border-red-300 text-white px-4 py-3 rounded-lg mb-6 text-sm backdrop-blur-sm">
+            <div class="bg-red-500 bg-opacity-70 border border-red-300 text-white px-4 py-3 rounded-lg mb-6 text-sm">
                 {{ session('error') }}
             </div>
         @endif
 
-        <form id="loginForm" action="{{ url('/admin/login') }}" method="POST">
+        {{--
+            Form standar Laravel:
+            - Tidak ada CryptoJS. Keamanan data saat transit adalah tugas HTTPS/SSL.
+            - Input langsung menggunakan atribut `name` sehingga dikirim ke server secara standar.
+            - Error validasi ditampilkan per field menggunakan $errors dari Laravel.
+        --}}
+        <form id="loginForm" action="{{ url('/admin/login') }}" method="POST" novalidate>
             @csrf
-            <!-- Input aslinya tidak akan dikirim (tanpa atribut name) -->
+
+            {{-- Field: Identifier (Email / No. Telepon) --}}
             <div class="mb-5">
-                <label class="block text-sm font-medium mb-2 opacity-90">Email / No. Telepon</label>
-                <input type="text" id="raw_identifier" required
-                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-gray-200 border-opacity-30 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#F2A541] transition-all"
+                <label for="identifier" class="block text-sm font-medium mb-2 opacity-90">
+                    Email / No. Telepon
+                </label>
+                <input
+                    type="text"
+                    id="identifier"
+                    name="identifier"
+                    value="{{ old('identifier') }}"
+                    required
+                    autocomplete="username"
+                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-gray-200 border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F2A541] transition-all {{ $errors->has('identifier') ? 'border-red-400 border-opacity-100' : '' }}"
                     placeholder="Masukkan Email atau No. Telepon">
+
+                @error('identifier')
+                    <p class="mt-2 text-xs text-red-300">{{ $message }}</p>
+                @enderror
             </div>
 
+            {{-- Field: Password --}}
             <div class="mb-6">
-                <labelcm class="block text-sm font-medium mb-2 opacity-90">Password</label>
-                <input type="password" id="raw_password" required
-                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-gray-200 border-opacity-30 text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#F2A541] transition-all"
-                    placeholder="Masukkan Password Min. 8 Karakter">
+                <label for="password" class="block text-sm font-medium mb-2 opacity-90">
+                    Password
+                </label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-gray-200 border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#F2A541] transition-all {{ $errors->has('password') ? 'border-red-400 border-opacity-100' : '' }}"
+                    placeholder="Masukkan Password">
+
+                @error('password')
+                    <p class="mt-2 text-xs text-red-300">{{ $message }}</p>
+                @enderror
             </div>
 
-            <!-- Input hidden untuk menampung hasil enkripsi -->
-            <input type="hidden" name="encrypted_payload" id="encrypted_payload">
-
-            <button type="submit"
+            <button
+                type="submit"
                 class="w-full bg-[#F2A541] hover:bg-[#d4882e] text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:-translate-y-1 shadow-lg">
                 Masuk Sistem
             </button>
         </form>
     </div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    {{-- Tidak ada lagi script CryptoJS atau logika enkripsi di sisi client --}}
 
-            const identifier = document.getElementById('raw_identifier').value;
-            const password = document.getElementById('raw_password').value;
-
-            const payloadData = JSON.stringify({
-                identifier: identifier,
-                password: password
-            });
-
-            // 1. KUNCI BARU (Wajib sama persis 32 Karakter dengan di Controller)
-            const secretKey = 'EkopemUprSecretKey2026AdminLogin';
-
-            // 2. PARSING KUNCI (Wajib untuk AES murni)
-            const keyParsed = CryptoJS.enc.Utf8.parse(secretKey);
-
-            // 3. ENKRIPSI
-            const encryptedData = CryptoJS.AES.encrypt(payloadData, keyParsed, {
-                mode: CryptoJS.mode.ECB,
-                padding: CryptoJS.pad.Pkcs7
-            }).toString();
-
-            document.getElementById('encrypted_payload').value = encryptedData;
-
-            // Lanjutkan submit
-            this.submit();
-        });
-    </script>
 </body>
 </html>

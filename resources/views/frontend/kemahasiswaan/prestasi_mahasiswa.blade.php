@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prestasi Mahasiswa — Ekonomi Pembangunan UPR</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +40,7 @@
 
 @include('frontend.layout.navbar')
 
-<section class="pt-32 pb-24 px-4 relative bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('assets/images/bg-prestasi.jpg') }}');">
+<section class="pt-32 pb-24 px-4 relative bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('assets/backrounds/backround_hero.jpg') }}');">
     <div class="absolute inset-0 bg-[#1E3A5F]/90 backdrop-blur-[2px]"></div>
 
     <div class="relative max-w-7xl mx-auto text-center z-10">

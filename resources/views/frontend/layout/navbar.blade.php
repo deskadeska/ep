@@ -38,7 +38,7 @@
         <div class="flex items-center justify-between h-16">
             <a href="{{ url('/') }}"
                 class="flex items-center space-x-3 flex-shrink-0 hover:opacity-90 transition-opacity">
-                <img src="{{ asset('assets/logo_upr.png') }}" alt="Logo UPR" class="w-10 h-10 object-contain">
+                <img src="{{ asset('assets/logo_upr.png') }}" alt="Logo UPR" class="w-10 h-10 object-contain" loading="lazy">
 
                 <div class="hidden sm:block">
                     <p class="text-xs font-semibold leading-tight" style="color: #E8F1F8;">Jurusan Ekonomi

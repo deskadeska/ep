@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Mendaftarkan middleware ke dalam grup 'web'
+        $middleware->web(append: [
+            \App\Http\Middleware\TrackVisitor::class,   // Perekam pengunjung website
+            \App\Http\Middleware\UpdateLastSeen::class, // Perekam waktu terakhir online admin
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

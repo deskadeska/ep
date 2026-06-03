@@ -95,25 +95,22 @@
         <div class="max-w-6xl mx-auto">
 
             @forelse($pengajar as $tipe => $daftarDosen)
-                <div class="mb-12">
+                <div class="mb-16 kelompok-dosen-section">
                     <div class="flex items-center gap-3 mb-6">
                         <div class="h-1 w-10 rounded-full" style="background-color: var(--accent);"></div>
                         <h2 class="text-xl md:text-2xl font-bold">{{ $tipe ?: 'Tenaga Pengajar Lainnya' }}</h2>
                     </div>
 
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                        @foreach ($daftarDosen as $dosen)
-                            <div
-                                class="lecturer-card reveal active bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col relative">
+                        @foreach ($daftarDosen as $index => $dosen)
+                            <div class="lecturer-card bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col relative reveal active {{ $index >= 4 ? 'hidden d-none-lecturer' : '' }}">
 
-                                <div
-                                    class="aspect-[4/5] w-full relative overflow-hidden bg-gray-100 border-b border-gray-100 flex-shrink-0">
+                                <div class="aspect-square w-full relative overflow-hidden bg-gray-100 border-b border-gray-100 flex-shrink-0">
                                     @if ($dosen->urlFotoTP)
                                         <img src="{{ asset('assets/admin/uploads/tenaga_pengajar/' . $dosen->urlFotoTP) }}"
-                                            alt="{{ $dosen->namaTP }}" class="w-full h-full object-cover">
+                                            alt="{{ $dosen->namaTP }}" class="w-full h-full object-cover object-top">
                                     @else
-                                        <div
-                                            class="w-full h-full flex flex-col items-center justify-center text-gray-300">
+                                        <div class="w-full h-full flex flex-col items-center justify-center text-gray-300">
                                             <svg class="w-16 h-16 mb-2" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
@@ -124,8 +121,7 @@
                                     @endif
 
                                     <div class="absolute top-3 right-3">
-                                        <span
-                                            class="px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md bg-white/90"
+                                        <span class="px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider shadow-sm backdrop-blur-md bg-white/90"
                                             style="color: var(--primary);">
                                             {{ $dosen->tipeTP ?? 'Dosen' }}
                                         </span>
@@ -139,18 +135,15 @@
                                     </h3>
 
                                     <div class="space-y-1.5 mb-6">
-                                        <p
-                                            class="text-[11px] md:text-xs font-medium text-[var(--medium-neutral)] truncate">
+                                        <p class="text-[11px] md:text-xs font-medium text-[var(--medium-neutral)] truncate">
                                             <span class="font-semibold text-gray-500">NIP:</span>
                                             {{ $dosen->nipTP ?? '-' }}
                                         </p>
-                                        <p
-                                            class="text-[11px] md:text-xs font-medium text-[var(--medium-neutral)] truncate">
+                                        <p class="text-[11px] md:text-xs font-medium text-[var(--medium-neutral)] truncate">
                                             <span class="font-semibold text-gray-500">Kode:</span>
                                             {{ $dosen->kodeDosenTP ?? '-' }}
                                         </p>
-                                        <p
-                                            class="text-[11px] md:text-xs font-medium text-[var(--medium-neutral)] line-clamp-1">
+                                        <p class="text-[11px] md:text-xs font-medium text-[var(--medium-neutral)] line-clamp-1">
                                             <span class="font-semibold text-gray-500">Jabatan:</span>
                                             {{ $dosen->jabatanFungsionalTP ?? '-' }}
                                         </p>
@@ -174,6 +167,18 @@
                             </div>
                         @endforeach
                     </div>
+
+                    @if(count($daftarDosen) > 4)
+                        <div class="text-center mt-10 load-more-area">
+                            <button type="button" onclick="layaniLoadMore(this)"
+                                class="inline-flex items-center gap-2 bg-[#2A6F97] hover:bg-[#1E3A5F] text-white font-bold py-2.5 px-6 rounded-lg shadow-sm transition-all duration-200 text-sm transform hover:-translate-y-0.5">
+                                Lihat Tenaga Pengajar Lainnya
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </div>
+                    @endif
                 </div>
             @empty
                 <div class="py-16 text-center bg-white rounded-2xl border border-dashed border-gray-300 shadow-sm">
@@ -190,20 +195,19 @@
     </section>
 
     <div id="detailModal"
-        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
-        <div
-            class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col md:flex-row relative transform transition-transform scale-95 origin-center">
+        class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm transition-opacity">
+
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col md:flex-row relative transform transition-transform scale-95 origin-center max-h-[90vh] overflow-hidden">
 
             <button onclick="closeDetailModal()"
-                class="absolute top-4 right-4 z-20 p-2 bg-white/70 hover:bg-white rounded-full text-gray-800 transition-colors shadow-sm">
+                class="absolute top-3 right-3 md:top-4 md:right-4 z-20 p-2 bg-white/80 backdrop-blur-sm hover:bg-white rounded-full text-gray-800 transition-colors shadow-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
             </button>
 
-            <div class="w-full md:w-2/5 bg-gray-100 relative h-64 md:h-auto flex-shrink-0">
-                <img id="modalFoto" src="" alt="Foto Dosen" class="w-full h-full object-cover">
+            <div class="w-full md:w-2/5 bg-gray-100 relative h-60 sm:h-72 md:h-auto flex-shrink-0">
+                <img id="modalFoto" src="" alt="Foto Dosen" class="w-full h-full object-cover object-top">
                 <div id="modalNoFoto"
                     class="hidden w-full h-full flex flex-col items-center justify-center text-gray-400 bg-gray-100">
                     <svg class="w-20 h-20 mb-3" fill="currentColor" viewBox="0 0 20 20">
@@ -212,17 +216,16 @@
                     </svg>
                     <span class="text-xs font-bold uppercase tracking-widest">No Photo</span>
                 </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80"></div>
                 <div class="absolute bottom-4 left-4 z-10">
                     <span id="modalTipe"
                         class="px-3 py-1 bg-[var(--accent)] text-white text-[10px] font-bold uppercase tracking-wider rounded-md shadow-sm"></span>
                 </div>
             </div>
 
-            <div
-                class="w-full md:w-3/5 p-6 md:p-8 flex flex-col bg-white modal-body overflow-y-auto max-h-[60vh] md:max-h-[80vh]">
+            <div class="w-full md:w-3/5 p-5 sm:p-6 md:p-8 flex flex-col bg-white modal-body overflow-y-auto flex-1">
 
-                <h2 id="modalNama" class="text-xl md:text-2xl font-bold mb-6 leading-snug"
+                <h2 id="modalNama" class="text-xl md:text-2xl font-bold mb-6 leading-snug pr-6"
                     style="color: var(--primary);"></h2>
 
                 <div class="space-y-4">
@@ -238,7 +241,7 @@
 
                     <div class="border-b border-gray-100 pb-3">
                         <p class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Kode Dosen</p>
-                        <p id="modalKode" class="text-sm font-medium text-gray-800"></p>
+                        <p id="modalSideKode" class="text-sm font-medium text-gray-800"></p>
                     </div>
 
                     <div class="border-b border-gray-100 pb-3">
@@ -267,7 +270,6 @@
     @include('frontend.layout.footer')
 
     <script>
-        // 1. Script Animasi Reveal
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('active');
@@ -277,21 +279,28 @@
         });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 2. Script Logika Modal Detail Dosen (Mengambil data JSON dari element tombol yang diklik)
+        function layaniLoadMore(button) {
+            const parentSection = button.closest('.kelompok-dosen-section');
+            const hiddenCards = parentSection.querySelectorAll('.d-none-lecturer');
+
+            hiddenCards.forEach(card => {
+                card.classList.remove('hidden');
+            });
+
+            button.closest('.load-more-area').remove();
+        }
+
         function openDetailModal(element) {
-            // Parsing data JSON yang aman dari atribut HTML
             const dosen = JSON.parse(element.getAttribute('data-dosen'));
 
-            // Isi Teks
             document.getElementById('modalNama').innerText = dosen.namaTP || '-';
             document.getElementById('modalNip').innerText = dosen.nipTP || '-';
             document.getElementById('modalNuptk').innerText = dosen.nuptkTP || '-';
-            document.getElementById('modalKode').innerText = dosen.kodeDosenTP || '-';
+            document.getElementById('modalSideKode').innerText = dosen.kodeDosenTP || '-';
             document.getElementById('modalPendidikan').innerText = dosen.pendidikanTP || '-';
             document.getElementById('modalJabatan').innerText = dosen.jabatanFungsionalTP || '-';
             document.getElementById('modalTipe').innerText = dosen.tipeTP || 'Dosen';
 
-            // Gabungkan Pangkat & Golongan
             let pangkatGol = '-';
             if (dosen.pangkatTP && dosen.golonganTP) {
                 pangkatGol = dosen.pangkatTP + ' (' + dosen.golonganTP + ')';
@@ -302,7 +311,6 @@
             }
             document.getElementById('modalGolongan').innerText = pangkatGol;
 
-            // Atur Gambar
             const imgEl = document.getElementById('modalFoto');
             const noImgEl = document.getElementById('modalNoFoto');
 
@@ -316,10 +324,8 @@
                 noImgEl.classList.remove('hidden');
             }
 
-            // Munculkan Modal & Kunci Scroll Body
             const modal = document.getElementById('detailModal');
             modal.classList.remove('hidden');
-            // Efek animasi pop up
             setTimeout(() => {
                 modal.children[0].classList.remove('scale-95');
                 modal.children[0].classList.add('scale-100');
@@ -329,7 +335,6 @@
 
         function closeDetailModal() {
             const modal = document.getElementById('detailModal');
-            // Kembalikan efek animasi pop up
             modal.children[0].classList.remove('scale-100');
             modal.children[0].classList.add('scale-95');
 
@@ -339,7 +344,6 @@
             }, 150);
         }
 
-        // Klik di luar area modal untuk menutup
         document.getElementById('detailModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeDetailModal();

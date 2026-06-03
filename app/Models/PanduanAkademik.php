@@ -12,4 +12,6 @@ class PanduanAkademik extends Model
     // HAPUS BARIS INI: public $timestamps = false;
 
     protected $fillable = ['judulPA', 'urlFilePA'];
+
+
 }

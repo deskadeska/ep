@@ -52,12 +52,12 @@
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .accordion-item.is-open .accordion-content {
-            max-height: 1000px;
-            /* Angka besar agar muat untuk banyak item */
+            /* Diperbesar menjadi 3000px agar detail yang sangat banyak tidak terpotong */
+            max-height: 3000px;
         }
 
         .accordion-item.is-open .accordion-icon {
@@ -99,7 +99,7 @@
                         class="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 focus:outline-none transition-colors"
                         onclick="toggleAccordion(this)">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg"
+                            <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0"
                                 style="background-color: var(--soft-bg); color: var(--secondary);">
                                 {{ $index + 1 }}
                             </div>
@@ -135,7 +135,7 @@
                                         @if ($detail->urlFile)
                                             <a href="{{ route('frontend.download_tugas_akhir', $detail->idDKTA) }}"
                                                 class="ml-4 w-9 h-9 flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-sm bg-[var(--primary)] text-white hover:bg-[var(--secondary)]"
-                                                title="Unduh Dokumen">
+                                                title="Unduh Dokumen" loading="lazy">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -176,26 +176,28 @@
     @include('frontend.layout.footer')
 
     <script>
-        // Logika Accordion / Dropdown yang sudah diperbaiki
+        // Logika Accordion dengan fitur otomatis menutup yang lain
         function toggleAccordion(element) {
-            // Ambil elemen parent (.accordion-item)
+            // Ambil elemen parent (.accordion-item) dari tombol yang diklik
             const currentItem = element.closest('.accordion-item');
 
-            // Cek apakah elemen ini sedang terbuka (menggunakan class is-open)
+            // Cek apakah elemen yang diklik sedang terbuka
             const isOpen = currentItem.classList.contains('is-open');
 
-            // Toggle status buka/tutup pada elemen yang di-klik
+            // PERBAIKAN: Tutup semua accordion yang ada di halaman terlebih dahulu
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                item.classList.remove('is-open');
+            });
+
+            // Jika sebelumnya tertutup, maka buka. (Jika sebelumnya terbuka, biarkan tertutup)
             if (!isOpen) {
                 currentItem.classList.add('is-open');
-            } else {
-                currentItem.classList.remove('is-open');
             }
         }
 
         // Efek Reveal pada Scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                // Ketika elemen terlihat di layar, tambahkan class 'active'
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                 }

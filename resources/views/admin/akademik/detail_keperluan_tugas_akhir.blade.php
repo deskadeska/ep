@@ -88,7 +88,7 @@
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Item Dokumen <span class="text-red-500">*</span></label>
-                    <input type="text" name="namaKTA" required placeholder="Misal: Form Pendaftaran PDF" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:outline-none">
+                    <textarea rows="6" name="namaKTA" required placeholder="Misal: Form Pendaftaran PDF" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:outline-none"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Upload File (Opsional)</label>
@@ -115,7 +115,7 @@
             <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nama Item Dokumen <span class="text-red-500">*</span></label>
-                    <input type="text" name="namaKTA" id="edit_nama" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:outline-none">
+                    <textarea rows="6" name="namaKTA" id="edit_nama" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:outline-none"></textarea>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Ganti File (Kosongkan jika tetap)</label>

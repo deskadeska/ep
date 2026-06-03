@@ -411,7 +411,7 @@
 
                         @foreach ($highlights as $index => $item)
                             <a href="{{ url('prodi/berita/baca/' . $item->idBerita) }}"
-                                class="w-full flex-shrink-0 flex flex-col md:flex-row group cursor-pointer block text-left">
+                                class="w-full flex-shrink-0 flex flex-col md:flex-row group cursor-pointer block text-left" loading="lazy">
 
                                 <div
                                     class="w-full md:w-5/12 aspect-video md:aspect-auto relative bg-gray-200 overflow-hidden">
@@ -509,7 +509,7 @@
                             style="min-height: 300px; border: 1px solid var(--card-border);">
 
                             <img src="{{ asset('assets/backrounds/backround_hero.jpg') }}" alt="Gedung FEB UPR"
-                                class="w-full h-full object-cover absolute inset-0">
+                                class="w-full h-full object-cover absolute inset-0" loading="lazy">
 
                         </div>
 
@@ -588,8 +588,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                             </svg>
-                            <span><strong>Link Maps:</strong> <a href="#" style="color:var(--subheadline);"
-                                    class="underline">Lihat di Google Maps</a></span>
+                            <span><strong>Link Maps:</strong> <a href="https://maps.app.goo.gl/aFW2tCHAQ4TJuNL2A" style="color:var(--subheadline);"
+                                    class="underline" target="_blank" rel="noopener noreferrer">Lihat di Google Maps</a></span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
@@ -614,7 +614,7 @@
                         class="bg-white p-4 md:p-6 rounded-3xl shadow-xl border border-gray-100 flex items-center justify-center h-full">
 
                         <img src="{{ asset('assets/files/Sertifikat 2025-2030.jpg') }}"
-                            alt="Sertifikat Akreditasi 2025-2030" class="w-full h-auto object-contain rounded-xl">
+                            alt="Sertifikat Akreditasi 2025-2030" class="w-full h-auto object-contain rounded-xl" loading="lazy">
 
                     </div>
                 </div>
@@ -643,7 +643,6 @@
                         </svg>
                     </div>
                     <h3 class="text-sm font-bold mt-3 leading-tight" style="color: var(--navy);">Ruang Kuliah Ber-AC</h3>
-                    <p class="text-xs mt-1 font-medium" style="color: var(--caption);">25 Ruangan</p>
                 </div>
 
                 <div class="stat-card reveal delay-2 border-none shadow-md" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">
@@ -777,7 +776,7 @@
                         <div
                             class="gallery-item reveal delay-{{ $loop->iteration }} group cursor-pointer bg-gray-200">
                             <img src="{{ asset('assets/admin/uploads/dokumentasi/' . $item->urlFotoDokumentasi) }}"
-                                alt="{{ $item->judulDokumentasi }}" class="w-full h-full object-cover">
+                                alt="{{ $item->judulDokumentasi }}" class="w-full h-full object-cover" loading="lazy">
 
                             <div
                                 class="absolute inset-0 bg-[#1E3A5F]/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
@@ -841,7 +840,7 @@
 
                                 <img src="{{ asset('assets/admin/uploads/mitra/' . $item->urlLogoMitra) }}"
                                     alt="{{ $item->namaMitra }}"
-                                    class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300">
+                                    class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300" loading="lazy">
 
                                 <div
                                     class="absolute bottom-2 md:bottom-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 w-full px-2 text-center pointer-events-none">
@@ -863,7 +862,7 @@
 
                             <img src="{{ asset('assets/admin/uploads/mitra/' . $item->urlLogoMitra) }}"
                                 alt="{{ $item->namaMitra }}"
-                                class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300">
+                                class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300" loading="lazy">
 
                             <div
                                 class="absolute bottom-2 md:bottom-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 w-full px-2 text-center pointer-events-none">

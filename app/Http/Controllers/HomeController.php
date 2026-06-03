@@ -39,7 +39,7 @@ class HomeController extends Controller
                             ->get();
 
         // 5. Total pengunjung periode aktif (reset tiap 6 bulan sejak 13 Jan 2026)
-        $totalPengunjung = Pengunjung::totalPeriodeIni();
+        $totalPengunjung = Pengunjung::count();
 
         // 6. Ambil data statistik dari tabel (jika kosong, buat instance baru agar tidak error)
         $statistik = Statistik::first() ?? new Statistik();

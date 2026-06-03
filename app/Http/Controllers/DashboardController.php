@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Spatie\Activitylog\Models\Activity;
@@ -12,20 +13,31 @@ use Spatie\Activitylog\Models\Activity;
 // Import model untuk statistik dinamis
 use App\Models\MataKuliah;
 use App\Models\TenagaPengajar;
+use App\Models\TahunAjaran; // Ambil model TahunAjaran terbaru
+use App\Models\Pengunjung; // Model untuk menghitung total pengunjung
+use App\Models\Magang; // Model untuk menghitung total magang
+use App\Models\Statistik; // Model untuk statistik lainnya jika diperlukan
+use App\Models\User; // Model untuk menghitung total pengguna jika diperlukan
 
 class DashboardController extends Controller
 {
     public function index()
     {
+        // Mengambil tahun ajaran paling terbaru berdasarkan idTA terbesar
+        $latestTA = TahunAjaran::orderBy('idTA', 'desc')->first();
+
         $data = [
-            'tahun_ajaran' => 'Genap 2025/2026',
+            'tahun_ajaran' => $latestTA ? $latestTA->tahunAkademikTA : 'Belum Ditentukan',
             'stats' => [
-                'total_mhs' => 453, // TODO: Ganti dengan App\Models\Mahasiswa::count() jika model sudah ada
-                'total_dosen' => TenagaPengajar::count(), // Dinamis dari tabel tb_tenaga_pengajar
-                'total_matkul' => MataKuliah::count(), // Dinamis dari tabel tb_mata_kuliah
-                'mhs_aktif' => 400, // TODO: Sesuaikan dengan logika mahasiswa aktif
-                'mhs_lulus' => 80,  // TODO: Sesuaikan dengan logika mahasiswa lulus
-                'pengunjung' => 1330 // TODO: Sesuaikan dengan tabel pengunjung/visitor
+                'total_admin' => User::count(), // Ambil total mahasiswa dari tabel statistik
+                'total_dosen' => TenagaPengajar::count(),
+                'total_matkul' => MataKuliah::count(),
+                'mhs_aktif' => Statistik::sum('mahasiswa_aktif'),
+                'mhs_lulus' => 80,
+                'total_magang' => Magang::count(),
+
+                // PERBARUI BARIS INI: Ambil total pengunjung dinamis dari database
+                'pengunjung' => Pengunjung::count()
             ],
             'system' => [
                 'status' => 'Online',
@@ -69,7 +81,6 @@ class DashboardController extends Controller
         $filePath = $backupDir . '/' . $fileName;
 
         // 3. Susun perintah mysqldump
-        // Hati-hati dengan password kosong pada environment XAMPP lokal
         $passString = empty($password) ? '' : "-p{$password}";
         $command = "mysqldump -h {$host} -u {$username} {$passString} {$database} > \"{$filePath}\"";
 
@@ -78,14 +89,12 @@ class DashboardController extends Controller
             exec($command . ' 2>&1', $output, $returnVar);
 
             if ($returnVar !== 0) {
-                // Jika gagal, catat error dan kembalikan pesan
                 \Log::error('Database Backup Failed: ' . implode("\n", $output));
                 return back()->with('error', 'Gagal melakukan backup. Pastikan mysqldump tersedia di server. Log: ' . end($output));
             }
 
             // 5. Unduh file dan otomatis hapus setelah terkirim agar storage server tidak penuh
             return response()->download($filePath)->deleteFileAfterSend(true);
-
         } catch (\Exception $e) {
             \Log::error('Backup Exception: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan sistem saat backup: ' . $e->getMessage());

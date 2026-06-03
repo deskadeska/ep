@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank Judul Skripsi — Ekonomi Pembangunan UPR</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=DM+Sans:wght@400;500;700&display=swap"
@@ -46,7 +47,7 @@
     @include('frontend.layout.navbar')
 
     <section class="pt-32 pb-20 px-4 relative bg-cover bg-center"
-        style="background-image: url('{{ asset('assets/images/bg-bank-judul.jpg') }}');">
+        style="background-image: url('{{ asset('assets/backrounds/backround_hero.jpg') }}');">
         <div class="absolute inset-0 bg-[#1E3A5F]/85 backdrop-blur-[2px]"></div>
         <div class="relative max-w-7xl mx-auto text-center z-10">
             <p class="text-sm font-bold uppercase tracking-widest mb-3 text-[var(--accent)] reveal active">Referensi

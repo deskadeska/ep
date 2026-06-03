@@ -29,6 +29,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $casts = [
+        'last_seen_at' => 'datetime',
+    ];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

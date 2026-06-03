@@ -35,7 +35,7 @@ class DetailKeperluanTugasAkhirController extends Controller
     public function index($idKTA)
     {
         $parent = KeperluanTugasAkhir::findOrFail($idKTA);
-        $details = DetailKeperluanTugasAkhir::where('idKTA', $idKTA)->orderBy('idDKTA', 'desc')->get();
+        $details = DetailKeperluanTugasAkhir::where('idKTA', $idKTA)->orderBy('idDKTA', 'asc')->get();
 
         return view('admin.akademik.detail_keperluan_tugas_akhir', compact('parent', 'details'));
     }
