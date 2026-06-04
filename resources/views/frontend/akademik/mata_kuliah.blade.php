@@ -216,28 +216,20 @@
                                 </td>
                                 <td class="py-4 px-6">
                                     <div class="space-y-1.5">
-                                        @if ($mk->dosen1)
+                                        @forelse ($mk->tenagaPengajar as $idx => $dosen)
                                             <div class="flex items-start gap-2 text-sm font-medium"
                                                 style="color: var(--dark-neutral);">
                                                 <span class="font-bold mt-0.5 leading-none"
-                                                    style="color: var(--accent);">1.</span>
-                                                <span class="leading-snug">{{ $mk->dosen1->namaTP }}
-                                                    {{ $mk->dosen1->gelarTP }}</span>
+                                                    style="color: var(--accent);">{{ $idx + 1 }}.</span>
+                                                <span class="leading-snug">
+                                                    {{ $dosen->namaTP }} {{ $dosen->gelarTP }}
+                                                </span>
                                             </div>
-                                        @endif
-                                        @if ($mk->dosen2)
-                                            <div class="flex items-start gap-2 text-sm font-medium"
-                                                style="color: var(--dark-neutral);">
-                                                <span class="font-bold mt-0.5 leading-none"
-                                                    style="color: var(--accent);">2.</span>
-                                                <span class="leading-snug">{{ $mk->dosen2->namaTP }}
-                                                    {{ $mk->dosen2->gelarTP }}</span>
+                                        @empty
+                                            <div class="text-xs italic" style="color: var(--medium-neutral);">
+                                                Belum diatur
                                             </div>
-                                        @endif
-                                        @if (!$mk->dosen1 && !$mk->dosen2)
-                                            <div class="text-xs italic" style="color: var(--medium-neutral);">Belum
-                                                diatur</div>
-                                        @endif
+                                        @endforelse
                                     </div>
                                 </td>
                             </tr>
