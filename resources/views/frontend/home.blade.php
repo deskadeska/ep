@@ -301,7 +301,7 @@
 
     @include('frontend.layout.navbar')
 
-<section class="hero-section bg-cover bg-center bg-no-repeat relative" id="hero"
+    <section class="hero-section bg-cover bg-center bg-no-repeat relative" id="hero"
         style="background-image: url('{{ asset('assets/backrounds/backround_hero.jpg') }}');">
 
         <div class="absolute inset-0 bg-white/80"></div>
@@ -377,7 +377,7 @@
                         </svg>
                     </div>
                     <p class="text-xs font-medium mb-1 leading-tight" style="color: var(--caption);">Jumlah Alumni
-                        </p>
+                    </p>
                     <p class="text-2xl sm:text-3xl font-bold" style="color: var(--navy);">
                         {{ number_format($statistik->alumni ?? 0, 0, ',', '.') }}
                     </p>
@@ -411,7 +411,8 @@
 
                         @foreach ($highlights as $index => $item)
                             <a href="{{ url('prodi/berita/baca/' . $item->idBerita) }}"
-                                class="w-full flex-shrink-0 flex flex-col md:flex-row group cursor-pointer block text-left" loading="lazy">
+                                class="w-full flex-shrink-0 flex flex-col md:flex-row group cursor-pointer block text-left"
+                                loading="lazy">
 
                                 <div
                                     class="w-full md:w-5/12 aspect-video md:aspect-auto relative bg-gray-200 overflow-hidden">
@@ -523,24 +524,30 @@
         </div>
     </section>
 
-<section class="py-16 lg:py-20 bg-white" id="jadwal">
+    <section class="py-16 lg:py-20 bg-white" id="jadwal">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12 reveal">
-                <h2 class="text-2xl sm:text-3xl font-bold inline-block" style="color: var(--navy);">Jadwal Kegiatan Terdekat</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold inline-block" style="color: var(--navy);">Jadwal Kegiatan
+                    Terdekat</h2>
                 <div class="h-[3px] w-12 rounded-sm mx-auto mt-2.5" style="background-color: var(--amber);"></div>
             </div>
 
-            @if(isset($jadwal) && $jadwal->count() > 0)
+            @if (isset($jadwal) && $jadwal->count() > 0)
                 <div class="flex flex-col md:grid md:grid-cols-3 gap-5 md:gap-6">
-                    @foreach($jadwal as $item)
-                        <div class="bg-[var(--content-bg)] rounded-2xl p-5 border border-[var(--card-border)] shadow-sm hover:shadow-md transition-all reveal delay-{{ $loop->iteration }} w-full">
+                    @foreach ($jadwal as $item)
+                        <div
+                            class="bg-[var(--content-bg)] rounded-2xl p-5 border border-[var(--card-border)] shadow-sm hover:shadow-md transition-all reveal delay-{{ $loop->iteration }} w-full">
                             <div class="flex items-center gap-4 mb-4 pb-4 border-b border-gray-200">
-                                <div class="bg-[var(--navy)] text-white rounded-xl p-3 text-center min-w-[70px] shadow-sm flex-shrink-0">
-                                    <span class="block text-2xl font-bold leading-none mb-1">{{ \Carbon\Carbon::parse($item->tanggalJK)->translatedFormat('d') }}</span>
-                                    <span class="block text-xs uppercase tracking-widest font-semibold text-[var(--amber)]">{{ \Carbon\Carbon::parse($item->tanggalJK)->translatedFormat('M') }}</span>
+                                <div
+                                    class="bg-[var(--navy)] text-white rounded-xl p-3 text-center min-w-[70px] shadow-sm flex-shrink-0">
+                                    <span
+                                        class="block text-2xl font-bold leading-none mb-1">{{ \Carbon\Carbon::parse($item->tanggalJK)->translatedFormat('d') }}</span>
+                                    <span
+                                        class="block text-xs uppercase tracking-widest font-semibold text-[var(--amber)]">{{ \Carbon\Carbon::parse($item->tanggalJK)->translatedFormat('M') }}</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-base md:text-lg font-bold leading-snug line-clamp-2" style="color: var(--navy);">
+                                    <h3 class="text-base md:text-lg font-bold leading-snug line-clamp-2"
+                                        style="color: var(--navy);">
                                         {{ $item->judulKegiatanJK }}
                                     </h3>
                                 </div>
@@ -552,8 +559,10 @@
                     @endforeach
                 </div>
             @else
-                <div class="text-center py-10 bg-[var(--content-bg)] rounded-2xl border border-dashed border-gray-300 reveal">
-                    <p class="text-gray-500 italic text-sm font-medium">Belum ada agenda kegiatan dalam waktu dekat.</p>
+                <div
+                    class="text-center py-10 bg-[var(--content-bg)] rounded-2xl border border-dashed border-gray-300 reveal">
+                    <p class="text-gray-500 italic text-sm font-medium">Belum ada agenda kegiatan dalam waktu dekat.
+                    </p>
                 </div>
             @endif
         </div>
@@ -588,8 +597,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                             </svg>
-                            <span><strong>Link Maps:</strong> <a href="https://maps.app.goo.gl/aFW2tCHAQ4TJuNL2A" style="color:var(--subheadline);"
-                                    class="underline" target="_blank" rel="noopener noreferrer">Lihat di Google Maps</a></span>
+                            <span><strong>Link Maps:</strong> <a href="https://maps.app.goo.gl/aFW2tCHAQ4TJuNL2A"
+                                    style="color:var(--subheadline);" class="underline" target="_blank"
+                                    rel="noopener noreferrer">Lihat di Google Maps</a></span>
                         </li>
                         <li class="flex items-start gap-3">
                             <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor"
@@ -614,7 +624,8 @@
                         class="bg-white p-4 md:p-6 rounded-3xl shadow-xl border border-gray-100 flex items-center justify-center h-full">
 
                         <img src="{{ asset('assets/files/Sertifikat 2025-2030.jpg') }}"
-                            alt="Sertifikat Akreditasi 2025-2030" class="w-full h-auto object-contain rounded-xl" loading="lazy">
+                            alt="Sertifikat Akreditasi 2025-2030" class="w-full h-auto object-contain rounded-xl"
+                            loading="lazy">
 
                     </div>
                 </div>
@@ -630,55 +641,73 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
             <div class="text-center mb-12 reveal">
-                <h2 class="text-2xl sm:text-3xl font-bold inline-block" style="color: var(--navy);">Fasilitas Jurusan</h2>
+                <h2 class="text-2xl sm:text-3xl font-bold inline-block" style="color: var(--navy);">Fasilitas Jurusan
+                </h2>
                 <div class="h-[3px] w-12 rounded-sm mx-auto mt-2.5" style="background-color: var(--amber);"></div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5">
 
-                <div class="stat-card reveal delay-1 border-none shadow-md" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">
+                <div class="stat-card reveal delay-1 border-none shadow-md"
+                    style="background: linear-gradient(135deg, #e0f2fe, #bae6fd);">
                     <div class="stat-icon-circle bg-white/60">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--navy);">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0119.5 16.5h-2.25m-9 0h9l1.409 1.409a2.25 2.25 0 01.659 1.591v.75m-11.25-3.75h9m-9 0V21m9-4.5V21" />
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--navy);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0119.5 16.5h-2.25m-9 0h9l1.409 1.409a2.25 2.25 0 01.659 1.591v.75m-11.25-3.75h9m-9 0V21m9-4.5V21" />
                         </svg>
                     </div>
-                    <h3 class="text-sm font-bold mt-3 leading-tight" style="color: var(--navy);">Ruang Kuliah Ber-AC</h3>
+                    <h3 class="text-sm font-bold mt-3 leading-tight" style="color: var(--navy);">Ruang Kuliah Ber-AC
+                    </h3>
                 </div>
 
-                <div class="stat-card reveal delay-2 border-none shadow-md" style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">
+                <div class="stat-card reveal delay-2 border-none shadow-md"
+                    style="background: linear-gradient(135deg, #dcfce7, #bbf7d0);">
                     <div class="stat-icon-circle bg-white/60">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--navy);">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--navy);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                     </div>
                     <h3 class="text-sm font-bold mt-3 leading-tight" style="color: var(--navy);">Ruang Aula</h3>
                 </div>
 
-                <div class="stat-card reveal delay-3 border-none shadow-md" style="background: linear-gradient(135deg, #fef9c3, #fde68a);">
+                <div class="stat-card reveal delay-3 border-none shadow-md"
+                    style="background: linear-gradient(135deg, #fef9c3, #fde68a);">
                     <div class="stat-icon-circle bg-white/60">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--navy);">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--navy);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                         </svg>
                     </div>
                     <h3 class="text-sm font-bold mt-3 leading-tight" style="color: var(--navy);">Ruang Baca</h3>
                 </div>
 
-                <div class="stat-card reveal delay-4 border-none shadow-md" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+                <div class="stat-card reveal delay-4 border-none shadow-md"
+                    style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
                     <div class="stat-icon-circle bg-white/60">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--navy);">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--navy);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
                         </svg>
                     </div>
                     <h3 class="text-sm font-bold mt-3 leading-tight" style="color: var(--navy);">Lab. Komputer</h3>
                 </div>
 
-                <div class="stat-card reveal delay-5 border-none shadow-md" style="background: linear-gradient(135deg, #fee2e2, #fecaca);">
+                <div class="stat-card reveal delay-5 border-none shadow-md"
+                    style="background: linear-gradient(135deg, #fee2e2, #fecaca);">
                     <div class="stat-icon-circle bg-white/60">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--navy);">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            style="color: var(--navy);">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-sm font-bold mt-3 leading-tight text-center px-1" style="color: var(--navy);">Ruang Rohis & Permakris</h3>
+                    <h3 class="text-sm font-bold mt-3 leading-tight text-center px-1" style="color: var(--navy);">
+                        Ruang Rohis & Permakris</h3>
                 </div>
 
             </div>
@@ -709,6 +738,10 @@
                                 <div class="relative rounded-2xl overflow-hidden shadow-2xl"
                                     style="background-color: var(--navy);">
                                     <div class="relative w-full" style="padding-bottom: 56.25%;">
+                                        <p class="text-red-500 font-bold mb-4">
+                                            URL di DB: {{ $pinnedVideo->urlYoutube }} <br>
+                                            ID yg Terbaca: {{ $ytId }}
+                                        </p>
                                         <iframe class="absolute top-0 left-0 w-full h-full border-0"
                                             src="https://www.youtube.com/embed/{{ $ytId }}?rel=0"
                                             title="YouTube video player"
@@ -776,7 +809,8 @@
                         <div
                             class="gallery-item reveal delay-{{ $loop->iteration }} group cursor-pointer bg-gray-200">
                             <img src="{{ asset('assets/admin/uploads/dokumentasi/' . $item->urlFotoDokumentasi) }}"
-                                alt="{{ $item->judulDokumentasi }}" class="w-full h-full object-cover" loading="lazy">
+                                alt="{{ $item->judulDokumentasi }}" class="w-full h-full object-cover"
+                                loading="lazy">
 
                             <div
                                 class="absolute inset-0 bg-[#1E3A5F]/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
@@ -840,7 +874,8 @@
 
                                 <img src="{{ asset('assets/admin/uploads/mitra/' . $item->urlLogoMitra) }}"
                                     alt="{{ $item->namaMitra }}"
-                                    class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300" loading="lazy">
+                                    class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300"
+                                    loading="lazy">
 
                                 <div
                                     class="absolute bottom-2 md:bottom-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 w-full px-2 text-center pointer-events-none">
@@ -862,7 +897,8 @@
 
                             <img src="{{ asset('assets/admin/uploads/mitra/' . $item->urlLogoMitra) }}"
                                 alt="{{ $item->namaMitra }}"
-                                class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300" loading="lazy">
+                                class="max-w-full max-h-12 object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:-translate-y-3 transition-all duration-300"
+                                loading="lazy">
 
                             <div
                                 class="absolute bottom-2 md:bottom-3 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 w-full px-2 text-center pointer-events-none">
