@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jurusan Ekonomi Pembangunan — FEB UNPAR</title>
+    <title>@yield('title', 'Jurusan Ekonomi Pembangunan — FEB UNPAR')</title>
+    <meta name="description" content="@yield('description', 'Informasi lengkap tentang Jurusan Ekonomi Pembangunan di Fakultas Ekonomi dan Bisnis Universitas Palangka Raya. Profil, kurikulum, dosen, prestasi mahasiswa, dan berita terkini seputar jurusan.')">
+    <meta name="keywords" content="@yield('keywords', 'Ekonomi Pembangunan, FEB UPR, Jurusan Ekonomi, Universitas Palangka Raya, Profil Jurusan, Kurikulum, Dosen, Prestasi Mahasiswa, Berita Ekonomi Pembangunan, Ekopem UPR')">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri Video — Ekonomi Pembangunan UPR</title>
+    <title>@yield('title', 'Galeri Video — Ekonomi Pembangunan UPR')</title>
+    <meta name="description" content="@yield('description', 'Kumpulan video seputar kegiatan, kuliah, dan informasi penting di Jurusan Ekonomi Pembangunan, Fakultas Ekonomi dan Bisnis, Universitas Palangka Raya.')">
+    <meta name="keywords" content="@yield('keywords', 'Video Ekonomi Pembangunan, Jurusan Ekonomi Pembangunan, FEB UPR, Kegiatan Mahasiswa, Kuliah Ekonomi Pembangunan, Informasi Jurusan Ekonomi Pembangunan')">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">

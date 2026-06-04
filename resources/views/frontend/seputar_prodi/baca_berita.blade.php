@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $berita->judulBerita }} — Ekonomi Pembangunan UNPAR</title>
+    <title> @yield('title', $berita->judulBerita . ' — Ekonomi Pembangunan UNPAR') </title>
+    <meta name="description" content="@yield('description', 'Baca berita lengkap tentang ' . $berita->judulBerita . ' di Jurusan Ekonomi Pembangunan, Fakultas Ekonomi dan Bisnis, Universitas Palangka Raya.')">
+    <meta name="keywords" content="@yield('keywords', 'Berita Ekonomi Pembangunan, Artikel Ekonomi Pembangunan, FEB UPR, Jurusan Ekonomi, Universitas Palangka Raya')">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
