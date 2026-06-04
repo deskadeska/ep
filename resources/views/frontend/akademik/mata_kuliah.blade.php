@@ -188,7 +188,9 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($mataKuliah as $index => $mk)
-                            <tr class="hover:bg-[var(--light-neutral)] transition duration-150 group">
+                            {{-- 3. Batas baris diperjelas dengan efek belang-belang (Zebra Striping) menggunakan bg-white dan even:bg-gray-50 --}}
+                            <tr
+                                class="bg-white even:bg-[var(--light-neutral)]/60 hover:bg-[var(--light-neutral)] transition duration-150 group">
                                 <td class="py-4 px-6 text-center text-sm font-medium"
                                     style="color: var(--medium-neutral);">
                                     {{ $index + 1 }}
@@ -215,14 +217,14 @@
                                     </span>
                                 </td>
                                 <td class="py-4 px-6">
-                                    <div class="space-y-1.5">
-                                        @forelse ($mk->tenagaPengajar as $idx => $dosen)
-                                            <div class="flex items-start gap-2 text-sm font-medium"
+                                    <div class="space-y-2">
+                                        @forelse ($mk->tenagaPengajar as $dosen)
+                                            {{-- 1 & 2. Penomoran dihapus, format diubah menjadi: Nama Dosen (Peran) --}}
+                                            <div class="text-sm font-medium leading-snug"
                                                 style="color: var(--dark-neutral);">
-                                                <span class="font-bold mt-0.5 leading-none"
-                                                    style="color: var(--accent);">{{ $idx + 1 }}.</span>
-                                                <span class="leading-snug">
-                                                    {{ $dosen->namaTP }} {{ $dosen->gelarTP }}
+                                                <span>{{ $dosen->namaTP }} {{ $dosen->gelarTP }}</span>
+                                                <span class="text-xs font-normal text-gray-500 italic ml-1">
+                                                    ({{ $dosen->pivot->rolePMK ?? 'Pengampu' }})
                                                 </span>
                                             </div>
                                         @empty
