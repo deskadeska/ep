@@ -33,7 +33,7 @@ class TenagaPengajarController extends Controller
             'pangkatTP'           => 'nullable|string|max:255',
             'golonganTP'          => 'nullable|string|max:255',
             'jabatanFungsionalTP' => 'nullable|string|max:255',
-            'tipeTP'              => 'required|in:Dosen Tetap,Dosen Luar Biasa',
+            'tipeTP'              => 'required|in:Dosen Luar Biasa,Dosen Tetap,Dosen Tidak Tetap,Dosen Praktisi',
             'urlFotoTP'           => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
@@ -73,7 +73,7 @@ class TenagaPengajarController extends Controller
             'pangkatTP'           => 'nullable|string|max:255',
             'golonganTP'          => 'nullable|string|max:255',
             'jabatanFungsionalTP' => 'nullable|string|max:255',
-            'tipeTP'              => 'required|in:Dosen Tetap,Dosen Luar Biasa',
+            'tipeTP'              => 'required|in:Dosen Luar Biasa,Dosen Tetap,Dosen Tidak Tetap,Dosen Praktisi',
             'urlFotoTP'           => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 

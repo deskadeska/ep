@@ -89,7 +89,7 @@
                         </div>
                     </td>
                     <td class="p-4">
-                        <span class="inline-block {{ $p->tipeTP == 'Dosen Tetap' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }} px-2.5 py-1 rounded-md text-xs font-semibold mb-1">
+                        <span class="inline-block bg-green-100 text-green-700 px-2.5 py-1 rounded-md text-xs font-semibold mb-1">
                             {{ $p->tipeTP }}
                         </span>
                         <div class="text-xs text-gray-500 mt-0.5">
@@ -167,8 +167,10 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Dosen <span class="text-red-500">*</span></label>
                         <select name="tipeTP" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] focus:outline-none bg-white">
-                            <option value="Dosen Tetap">Dosen Tetap</option>
                             <option value="Dosen Luar Biasa">Dosen Luar Biasa</option>
+                            <option value="Dosen Tetap">Dosen Tetap</option>
+                            <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
+                            <option value="Dosen Praktisi">Dosen Praktisi</option>
                         </select>
                     </div>
                 </div>
@@ -233,8 +235,10 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Tipe Dosen <span class="text-red-500">*</span></label>
                         <select name="tipeTP" id="edit_tipe" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] focus:outline-none bg-white">
-                            <option value="Dosen Tetap">Dosen Tetap</option>
                             <option value="Dosen Luar Biasa">Dosen Luar Biasa</option>
+                            <option value="Dosen Tetap">Dosen Tetap</option>
+                            <option value="Dosen Tidak Tetap">Dosen Tidak Tetap</option>
+                            <option value="Dosen Praktisi">Dosen Praktisi</option>
                         </select>
                     </div>
                 </div>
