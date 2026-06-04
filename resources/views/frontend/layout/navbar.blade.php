@@ -5,6 +5,7 @@
             'Sejarah Jurusan' => url('/informasi/sejarah-jurusan'),
             'Visi & Misi' => url('/informasi/visi-misi'),
             'Zona Integritas' => url('/informasi/zona-integritas'),
+            'Struktur Organisasi' => url('/informasi/struktur-organisasi'),
             'Pimpinan Jurusan' => url('/informasi/pimpinan-jurusan'),
             'Tenaga Pengajar' => url('/informasi/tenaga-pengajar'),
             'Tenaga Kependidikan' => url('/informasi/tenaga-kependidikan'),
