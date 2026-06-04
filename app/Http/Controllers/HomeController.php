@@ -34,7 +34,9 @@ class HomeController extends Controller
                              ->get();
 
         // 4. Data Video Pinned (Hanya 1)
-        $pinnedVideo = Video::where('statusVideo', 'Pinned')->first();
+        $pinnedVideo = Video::where('statusVideo', 'Pinned')
+                            ->take(1)
+                            ->get();
 
         // 5. Total pengunjung periode aktif (reset tiap 6 bulan sejak 13 Jan 2026)
         $totalPengunjung = Pengunjung::count();
