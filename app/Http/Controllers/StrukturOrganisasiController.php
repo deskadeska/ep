@@ -13,7 +13,7 @@ class StrukturOrganisasiController extends Controller
         // Mengambil data pertama dari database
         $so = StrukturOrganisasi::first();
 
-        return view('frontend.kemahasiswaan.struktur_organisasi', compact('so'));
+        return view('frontend.informasi.struktur_organisasi', compact('so'));
     }
 
     public function index()
@@ -21,7 +21,7 @@ class StrukturOrganisasiController extends Controller
         // Ambil data pertama. Jika tabel kosong, buat instance memori kosong agar view tidak error.
         $so = StrukturOrganisasi::first() ?? new StrukturOrganisasi();
 
-        return view('admin.kemahasiswaan.struktur_organisasi', compact('so'));
+        return view('admin.informasi_penting.struktur_organisasi', compact('so'));
     }
 
     public function update(Request $request, $id)

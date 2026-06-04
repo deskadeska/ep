@@ -53,7 +53,6 @@ Route::prefix('akademik')->group(function () {
 });
 
 Route::prefix('kemahasiswaan')->group(function () {
-    Route::get('/struktur-organisasi', [StrukturOrganisasiController::class, 'frontendIndex'])->name('frontend.struktur_organisasi');
     Route::get('/alumni', [AlumniController::class, 'frontendIndex'])->name('frontend.alumni');
     Route::get('/prestasi', [PrestasiMahasiswaController::class, 'frontendIndex'])->name('frontend.prestasi');
     Route::get('/bank-judul', [BankJudulSkripsiController::class, 'frontendIndex'])->name('frontend.bank_judul');
@@ -77,6 +76,9 @@ Route::prefix('informasi')->group(function () {
     Route::get('/zona-integritas', function () {
         return view('frontend.informasi_penting.zona_integritas');
     })->name('frontend.zona_integritas');
+
+    // Rute Struktur Organisasi
+    Route::get('/struktur-organisasi', [StrukturOrganisasiController::class, 'frontendIndex'])->name('frontend.struktur_organisasi');
 
     // Rute Tenaga Pengajar
     Route::get('/tenaga-pengajar', [TenagaPengajarController::class, 'frontendIndex'])->name('frontend.tenaga_pengajar');
@@ -222,13 +224,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('/informasi-penting/pimpinan-jurusan', [PimpinanJurusanController::class, 'store'])->name('admin.pimpinan_jurusan.store');
     Route::put('/informasi-penting/pimpinan-jurusan/{id}', [PimpinanJurusanController::class, 'update'])->name('admin.pimpinan_jurusan.update');
     Route::delete('/informasi-penting/pimpinan-jurusan/{id}', [PimpinanJurusanController::class, 'destroy'])->name('admin.pimpinan_jurusan.destroy');
+    // -> Struktur Organisasi
+    Route::get('/informasi-penting/struktur-organisasi', [StrukturOrganisasiController::class, 'index'])->name('admin.struktur_organisasi.index');
+    Route::post('/informasi-penting/struktur-organisasi', [StrukturOrganisasiController::class, 'store'])->name('admin.struktur_organisasi.store');
+    Route::put('/informasi-penting/struktur-organisasi/{id}', [StrukturOrganisasiController::class, 'update'])->name('admin.struktur_organisasi.update');
+    Route::delete('/informasi-penting/struktur-organisasi/{id}', [StrukturOrganisasiController::class, 'destroy'])->name('admin.struktur_organisasi.destroy');
 
     // Rute Kemahasiswaan
-    // -> Struktur Organisasi
-    Route::get('/kemahasiswaan/struktur-organisasi', [StrukturOrganisasiController::class, 'index'])->name('admin.struktur_organisasi.index');
-    Route::post('/kemahasiswaan/struktur-organisasi', [StrukturOrganisasiController::class, 'store'])->name('admin.struktur_organisasi.store');
-    Route::put('/kemahasiswaan/struktur-organisasi/{id}', [StrukturOrganisasiController::class, 'update'])->name('admin.struktur_organisasi.update');
-    Route::delete('/kemahasiswaan/struktur-organisasi/{id}', [StrukturOrganisasiController::class, 'destroy'])->name('admin.struktur_organisasi.destroy');
     // -> Alumni
     Route::get('/kemahasiswaan/alumni', [AlumniController::class, 'index'])->name('admin.alumni.index');
     Route::post('/kemahasiswaan/alumni', [AlumniController::class, 'store'])->name('admin.alumni.store');

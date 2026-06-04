@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita & Artikel — Ekonomi Pembangunan UNPAR</title>
+    <title>@yield('title', 'Berita & Artikel — Ekonomi Pembangunan UNPAR')</title>
+    <meta name="description" content="@yield('description', 'Berita dan artikel terbaru seputar Jurusan Ekonomi Pembangunan di Fakultas Ekonomi dan Bisnis Universitas Palangka Raya.')">
+    <meta name="keywords" content="@yield('keywords', 'Berita Ekonomi Pembangunan, Artikel Ekonomi Pembangunan, FEB UPR, Jurusan Ekonomi, Universitas Palangka Raya')">
     <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">

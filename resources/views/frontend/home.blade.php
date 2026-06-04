@@ -335,7 +335,7 @@
                 </blockquote>
                 <div class="flex flex-wrap gap-3 reveal delay-4">
                     <a href="#highlight" class="btn-primary">Lihat Selengkapnya</a>
-                    <a href="informasi/profil" class="btn-secondary">Profil Jurusan</a>
+                    <a href="informasi/sejarah-jurusan" class="btn-secondary">Profil Jurusan</a>
                 </div>
             </div>
         </div>
