@@ -19,7 +19,6 @@
             'Administrasi Akademik' => url('/akademik/administrasi'),
         ],
         'Kemahasiswaan' => [
-            'Struktur Organisasi' => url('/kemahasiswaan/struktur-organisasi'),
             'Alumni' => url('/kemahasiswaan/alumni'),
             'Prestasi' => url('/kemahasiswaan/prestasi'),
             'Bank Judul Skripsi' => url('/kemahasiswaan/bank-judul'),

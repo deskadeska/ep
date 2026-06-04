@@ -13,7 +13,7 @@ class StrukturOrganisasiController extends Controller
         // Mengambil data pertama dari database
         $so = StrukturOrganisasi::first();
 
-        return view('frontend.informasi.struktur_organisasi', compact('so'));
+        return view('frontend.informasi_penting.struktur_organisasi', compact('so'));
     }
 
     public function index()
