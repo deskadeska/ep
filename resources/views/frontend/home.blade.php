@@ -686,22 +686,19 @@
     </section>
 
     @if ($pinnedVideo)
-        <section class="py-16 lg:py-20 bg-white" id="video">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        @php
+            if (!function_exists('getYtId')) {
+                function getYtId($url) {
+                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|shorts)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match);
+                    return $match[1] ?? null;
+                }
+            }
+            $ytId = getYtId($pinnedVideo->urlYoutube);
+        @endphp
 
-                @php
-                    $ytId = '';
-                    preg_match(
-                        '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|shorts)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
-                        $pinnedVideo->urlYoutube,
-                        $match,
-                    );
-                    if (isset($match[1])) {
-                        $ytId = $match[1];
-                    }
-                @endphp
-
-                @if ($ytId)
+        @if ($ytId)
+            <section class="py-16 lg:py-20 bg-white" id="video">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center reveal active">
 
                         <div class="lg:col-span-5 w-full">
@@ -709,10 +706,12 @@
                                 style="background-color: var(--navy);">
                                 <div class="relative w-full" style="padding-bottom: 56.25%;">
                                     <iframe class="absolute top-0 left-0 w-full h-full border-0"
-                                        src="https://www.youtube.com/embed/{{ $ytId }}?rel=0"
-                                        title="YouTube video player"
+                                        src="https://www.youtube.com/embed/{{ $ytId }}"
+                                        title="{{ $pinnedVideo->judulVideo }}"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen>
+                                        referrerpolicy="strict-origin-when-cross-origin"
+                                        allowfullscreen
+                                        loading="lazy">
                                     </iframe>
                                 </div>
                             </div>
@@ -721,7 +720,7 @@
                         <div class="lg:col-span-7 w-full flex flex-col justify-center text-left">
                             <h2 class="text-2xl sm:text-3xl font-bold leading-tight mb-2"
                                 style="color: var(--navy);">
-                                Video Profil Jurusan Ekopem
+                                {{ $pinnedVideo->judulVideo }}
                             </h2>
 
                             <div class="h-[3px] w-12 rounded-sm mb-6" style="background-color: var(--amber);">
@@ -729,12 +728,9 @@
 
                             <p class="leading-relaxed text-sm sm:text-base mb-6" style="color: var(--body);">
                                 Saksikan profil interaktif, kilasan edukasi, dan dokumentasi audiovisual resmi dari
-                                <strong>Jurusan Ekonomi Pembangunan, Fakultas Ekonomi dan Bisnis, Universitas
-                                    Palangka Raya</strong>.
-                                Melalui kanal ini, kami menghadirkan ruang transparansi informasi, publikasi
-                                kegiatan akademik,
-                                serta hasil kreativitas civitas akademika dalam mewujudkan tri dharma perguruan
-                                tinggi yang inovatif.
+                                <strong>Jurusan Ekonomi Pembangunan, Fakultas Ekonomi dan Bisnis, Universitas Palangka Raya</strong>.
+                                Melalui kanal ini, kami menghadirkan ruang transparansi informasi, publikasi kegiatan akademik,
+                                serta hasil kreativitas civitas akademika dalam mewujudkan tri dharma perguruan tinggi yang inovatif.
                             </p>
 
                             <div>
@@ -742,8 +738,7 @@
                                     target="_blank" rel="noopener noreferrer"
                                     class="btn-primary inline-flex items-center gap-2 text-sm font-bold py-3 px-6 rounded-lg transition shadow-md hover:shadow-lg">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
+                                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
                                     </svg>
                                     Kunjungi Channel YouTube
                                 </a>
@@ -751,10 +746,9 @@
                         </div>
 
                     </div>
-                @endif
-
-            </div>
-        </section>
+                </div>
+            </section>
+        @endif
     @endif
 
     <section class="py-16 lg:py-20" style="background-color: var(--hero-bg);" id="galeri">

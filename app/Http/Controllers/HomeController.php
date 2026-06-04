@@ -33,10 +33,8 @@ class HomeController extends Controller
                              ->take(5)
                              ->get();
 
-        // 4. Data Video Pinned (Hanya 1)
-        $pinnedVideo = Video::where('statusVideo', 'Pinned')
-                            ->take(1)
-                            ->get();
+        // 4. Data Video Pinned (Hanya 1) - Menggunakan first() berbentuk Object tunggal
+        $pinnedVideo = Video::where('statusVideo', 'Pinned')->first();
 
         // 5. Total pengunjung periode aktif (reset tiap 6 bulan sejak 13 Jan 2026)
         $totalPengunjung = Pengunjung::count();
@@ -49,10 +47,10 @@ class HomeController extends Controller
 
         // 8. Ambil Jadwal Kegiatan yang akan datang (tanggal >= hari ini) dan statusJK = true, urutkan berdasarkan tanggal terdekat
         $jadwal = JadwalKegiatan::where('tanggalJK', '>=', now()->toDateString())
-                            ->where('statusJK', false)
-                            ->orderBy('tanggalJK', 'asc')
-                            ->take(3)
-                            ->get();
+                                ->where('statusJK', false)
+                                ->orderBy('tanggalJK', 'asc')
+                                ->take(3)
+                                ->get();
 
         return view('frontend.home', compact(
             'highlights',
