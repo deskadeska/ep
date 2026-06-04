@@ -194,7 +194,7 @@
                     <div class="overflow-hidden">
                         <h3 class="font-bold text-sm mb-0.5 text-[var(--primary)]">Email</h3>
                         <p class="text-xs text-[var(--dark-neutral)] leading-tight truncate">
-                            fakultasekonomidanbisnis2402@gmail.com</p>
+                             feb.upr@upr.ac.id</p>
                     </div>
                 </div>
             </div>
