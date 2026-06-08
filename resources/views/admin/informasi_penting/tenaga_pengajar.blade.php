@@ -84,7 +84,7 @@
                         <div class="font-bold text-gray-800 text-base">{{ $p->namaTP }}</div>
                         <div class="text-xs text-gray-500 mt-1 space-y-0.5">
                             <div><span class="font-medium text-gray-600">NIP:</span> {{ $p->nipTP ?? '-' }}</div>
-                            <div><span class="font-medium text-gray-600">NUPTK:</span> {{ $p->nuptkTP ?? '-' }}</div>
+                            <div><span class="font-medium text-gray-600">NUPTK/NIDN:</span> {{ $p->nuptkTP ?? '-' }}</div>
                             <div><span class="font-medium text-gray-600">Kode Dosen:</span> {{ $p->kodeDosenTP ?? '-' }}</div>
                         </div>
                     </td>
@@ -141,7 +141,7 @@
                         <input type="text" name="nipTP" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">NUPTK</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">NUPTK/NIDN</label>
                         <input type="text" name="nuptkTP" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] focus:outline-none">
                     </div>
                     <div>
@@ -209,7 +209,7 @@
                         <input type="text" name="nipTP" id="edit_nip" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">NUPTK</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">NUPTK/NIDN</label>
                         <input type="text" name="nuptkTP" id="edit_nuptk" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#F2A541] focus:border-[#F2A541] focus:outline-none">
                     </div>
                     <div>
