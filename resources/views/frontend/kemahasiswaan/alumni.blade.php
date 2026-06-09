@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jejak Alumni — Ekonomi Pembangunan UNPAR</title>
+    <title>Jejak Alumni — Ekonomi Pembangunan UPR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,6 +64,15 @@
             box-shadow: 0 10px 25px -5px rgba(30, 58, 95, 0.08);
             transform: translateY(-2px);
         }
+
+        /* Hide Scrollbar untuk Navigasi Angkatan */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 
@@ -85,6 +94,19 @@
                 Jejak langkah, pengalaman, dan cerita inspiratif dari mereka yang telah merajut kisah sukses setelah
                 lulus dari program studi Ekonomi Pembangunan.
             </p>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-4 mt-10 mb-8">
+        <div class="flex overflow-x-auto gap-3 pb-4 hide-scrollbar items-center reveal active">
+            @forelse($listAngkatan as $angkatan)
+                <a href="{{ request()->fullUrlWithQuery(['angkatan' => $angkatan]) }}"
+                   class="px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm {{ $filterAngkatan == $angkatan ? 'bg-[var(--primary)] text-white' : 'bg-white text-[var(--medium-neutral)] border border border-[var(--card-border)] hover:bg-[var(--soft-bg)] hover:text-[var(--primary)]' }}">
+                    Angkatan {{ $angkatan }}
+                </a>
+            @empty
+                <span class="text-sm text-gray-400 italic">Belum ada data angkatan</span>
+            @endforelse
         </div>
     </section>
 
@@ -148,10 +170,20 @@
                     </svg>
                     <h3 class="text-lg font-bold mb-1" style="color: var(--primary);">Belum Ada Pesan</h3>
                     <p class="text-sm" style="color: var(--medium-neutral);">
-                        Belum ada data pesan dan kesan alumni yang ditambahkan ke dalam sistem.
+                        @if($filterAngkatan)
+                            Belum ada pesan dan kesan dari Angkatan {{ $filterAngkatan }}.
+                        @else
+                            Belum ada data pesan dan kesan alumni yang ditambahkan ke dalam sistem.
+                        @endif
                     </p>
                 </div>
             @endforelse
+
+            @if($alumni->hasPages())
+                <div class="mt-10 reveal active">
+                    {{ $alumni->appends(request()->query())->links() }}
+                </div>
+            @endif
         </div>
     </section>
 

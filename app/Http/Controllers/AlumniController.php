@@ -11,17 +11,34 @@ class AlumniController extends Controller
     public function frontendIndex(Request $request)
     {
         $search = $request->input('search');
+
+        // 1. Ambil daftar tahun angkatan yang unik terlebih dahulu (diurutkan dari yang terbaru)
+        $listAngkatan = Alumni::select('angkatanAlumni')
+                              ->distinct()
+                              ->orderBy('angkatanAlumni', 'desc')
+                              ->pluck('angkatanAlumni');
+
+        // 2. Default ke angkatan paling baru jika parameter 'angkatan' tidak ada di URL
+        $filterAngkatan = $request->input('angkatan', $listAngkatan->first());
+
         $query = Alumni::query();
 
         if ($search) {
-            $query->where('namaAlumni', 'like', "%{$search}%")
-                ->orWhere('angkatanAlumni', 'like', "%{$search}%");
+            $query->where(function($q) use ($search) {
+                $q->where('namaAlumni', 'like', "%{$search}%")
+                  ->orWhere('angkatanAlumni', 'like', "%{$search}%");
+            });
+        }
+
+        // 3. Filter berdasarkan angkatan (sekarang otomatis memfilter angkatan terbaru sejak awal load)
+        if ($filterAngkatan) {
+            $query->where('angkatanAlumni', $filterAngkatan);
         }
 
         // Urutkan dari lulusan terbaru
         $alumni = $query->orderBy('tahunLulusAlumni', 'desc')->paginate(15);
 
-        return view('frontend.kemahasiswaan.alumni', compact('alumni'));
+        return view('frontend.kemahasiswaan.alumni', compact('alumni', 'listAngkatan', 'filterAngkatan'));
     }
 
     public function index()
@@ -82,7 +99,6 @@ class AlumniController extends Controller
         ];
 
         if ($request->hasFile('urlFotoAlumni')) {
-            // Hapus foto lama jika ada
             if ($alumni->urlFotoAlumni && File::exists(public_path('assets/admin/uploads/alumni/' . $alumni->urlFotoAlumni))) {
                 File::delete(public_path('assets/admin/uploads/alumni/' . $alumni->urlFotoAlumni));
             }
