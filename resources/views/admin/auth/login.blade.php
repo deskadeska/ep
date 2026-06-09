@@ -101,6 +101,10 @@
                 class="w-full bg-[#F2A541] hover:bg-[#d4882e] text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:-translate-y-1 shadow-lg">
                 Masuk Sistem
             </button>
+
+            <div class="mt-4 text-center text-sm opacity-80">
+                <p>Kembali ke <a href="{{ url('/') }}" class="text-[#F2A541] hover:underline">Beranda</a></p>
+            </div>
         </form>
     </div>
 

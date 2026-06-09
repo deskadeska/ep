@@ -89,8 +89,7 @@
                 <span class="subheadline-label">Visi</span>
                 <div class="py-6 px-4">
                     <h2 class="text-2xl md:text-3xl font-bold leading-relaxed" style="color: var(--primary);">
-                        Menjadi Fakultas Ekonomi dan Bisnis Universitas Palangka Raya yang Unggul, Bermoral Pancasila
-                        dan Bereputasi di Tingkat Nasional dan Internasional
+                        “Menghasilkan Lulusan Ilmu Ekonomi yang Unggul, Bermoral Pancasila, Berdaya Saing Global dan Berkontribusi Nyata bagi Pembangunan Berkelanjutan”.
                     </h2>
                 </div>
             </div>
@@ -105,13 +104,12 @@
                 <div class="flex flex-col gap-4">
                     @php
                         $misi = [
-                            'Menyelenggarakan Tri Dharma Perguruan secara efisien dan produktif (efficiency & productivity) untuk menghasilkan sumber daya manusia yang berkualitas sesuai kebutuhan masyarakat yang dinamis (relevance).',
-                            'Mewujudkan tatakelola Fakultas Ekonomi dan Bisnis yang baik, transparan, akuntabel, partisipatif, dan profesional, berbasis teknologi informasi.',
-                            'Menciptakan suasana akademik (academic atmosphere) untuk meningkatkan kualitas pendidikan, kreativitas dan inovasi, produktivitas akademik, kerjasama dan kolaborasi civitas akademika.',
-                            'Mengembangkan ketersediaan sarana dan prasarana pendidikan, perkantoran, serta fasilitas penunjang lainnya guna mendukung proses belajar-mengajar, layanan publik, kebersihan, keindahan, keamanan dan kenyamanan lingkungan.',
-                            'Memperkuat kualitas sumber daya manusia (SDM) tenaga pendidik dan kependidikan.',
-                            'Mendorong kegiatan di bidang kemahasiswaan agar mampu bersaing di tingkat regional, nasional, dan internasional.',
-                            'Memperluas kerjasama dan sinergitas dengan pemerintah daerah, pelaku usaha, alumni, dan lembaga lainnya, baik di tingkat nasional dan internasional.',
+                            'Menyelenggarakan Pendidikan Berkualitas Tinggi dan Berdampak: Mengimplementasikan kurikulum berbasis Outcome Based Education (OBE) dan berorientasi pada Kampus Berdampak yang relevan dengan kebutuhan pembangunan nasional dan global, serta mempertahankan akreditasi “Unggul” melalui inovasi pembelajaran dan penjaminan mutu berkelanjutan.',
+                            'Pancasila Sebagai Pedoman Tata Kelola Bertintegritas: Nilai Pancasila sebagai dasar sistem administrasi yang transparan, akuntabel, dan berbasis teknologi informasi sesuai prinsip Good Governance, serta mendukung terwujudnya Zona Integritas (ZI) menuju Wilayah Bebas Korupsi (WBK)',
+                            'Mengembangkan Riset Inovasi Berdampak: Menghasilkan penelitian terapan berbasis ekonomi pembangunan yang mendukung kebijakan publik, industri, dan masyarakat, serta mempublikasikan karya ilmiah yang bereputasi untuk memperkuat reputasi jurusan.',
+                            'Membangun Daya Saing Global: Mengembangkan kemitraan dengan pemerintah, industri, perguruan tinggi internasional, dan lembaga multilateral untuk program magang riset kolaboratif, dan pengabdian masyarakat berstandar global, serta membuka kelas bilingual, program pertukaran pelajar/dosen, serta meraih akreditasi/sertifikasi internasional untuk meningkatkan daya saing global.',
+                            'Pembangunan Sumber Daya Manusia yang Berkelanjutan: Menghasilkan Sumber Daya Manusia yang berkelanjutan dengan memfasilitasi Dosen, Tenaga Pendidik, dan Mahasiswa untuk memperoleh modal manusia yang unggul serta memiliki kompetensi global sebagai partisipasi untuk mencapai Indonesia Emas.',
+                            'Optimalisasi Infrastruktur dan Inovasi Digital: Menyediakan Sarana-Prasarana berstandar Internasional (laboratorium data, digital library, ruang kolaborasi) dan mendorong pemanfaatan teknologi untuk penguatan Tri Dharma.',
                         ];
                     @endphp
 
