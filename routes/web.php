@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminManageController;
 use App\Http\Controllers\ProfilSayaController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\JurnalIlmiahController;
 use App\Http\Controllers\MagangController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\KalenderAkademikController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\PrestasiMahasiswaController;
 use App\Http\Controllers\BankJudulSkripsiController;
 use App\Http\Controllers\OrganisasiMahasiswaController;
 use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\CapaianDosenController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\DokumentasiController;
@@ -38,6 +40,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Grup Rute Akademik
 Route::prefix('akademik')->group(function () {
     Route::get('/mata-kuliah', [MataKuliahController::class, 'frontendIndex'])->name('frontend.mata_kuliah');
+    Route::get('/jurnal-ilmiah', [JurnalIlmiahController::class, 'frontendIndex'])->name('frontend.jurnal_ilmiah');
     Route::get('/magang', [MagangController::class, 'frontendIndex'])->name('frontend.magang');
     Route::get('/administrasi', [AdministrasiAkademikController::class, 'frontendIndex'])->name('frontend.administrasi');
     Route::get('/kalender', [KalenderAkademikController::class, 'frontendIndex'])->name('frontend.kalender');
@@ -53,6 +56,9 @@ Route::prefix('akademik')->group(function () {
 });
 
 Route::prefix('kemahasiswaan')->group(function () {
+    Route::get('/tracer-study', function () {
+        return view('frontend.kemahasiswaan.tracer_study');
+    })->name('frontend.tracer_study');
     Route::get('/alumni', [AlumniController::class, 'frontendIndex'])->name('frontend.alumni');
     Route::get('/prestasi', [PrestasiMahasiswaController::class, 'frontendIndex'])->name('frontend.prestasi');
     Route::get('/bank-judul', [BankJudulSkripsiController::class, 'frontendIndex'])->name('frontend.bank_judul');
@@ -94,10 +100,12 @@ Route::prefix('informasi')->group(function () {
 });
 
 Route::prefix('prodi')->group(function () {
+    Route::get('/capaian-dosen', [CapaianDosenController::class, 'frontendIndex'])->name('frontend.capaian_dosen');
     Route::get('/berita', [BeritaController::class, 'frontendIndex'])->name('frontend.berita');
-
-    // Placeholder untuk rute baca berita (sesuaikan parameternya nanti)
     Route::get('/berita/baca/{id}', [BeritaController::class, 'bacaBerita'])->name('frontend.baca_berita');
+    Route::get('/penelitian-pengabdian', function () {
+        return view('frontend.seputar_prodi.penelitian_pengabdian');
+    })->name('frontend.penelitian_pengabdian');
     Route::get('/dokumentasi', [DokumentasiController::class, 'frontendIndex'])->name('frontend.dokumentasi');
     Route::get('/video', [VideoController::class, 'frontendIndex'])->name('frontend.video');
     Route::get('/jadwal-kegiatan', [JadwalKegiatanController::class, 'frontendIndex'])->name('frontend.jadwal_kegiatan');
@@ -164,6 +172,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('/akademik/mata-kuliah', [MataKuliahController::class, 'store'])->name('admin.akademik.matakuliah.store');
     Route::put('/akademik/mata-kuliah/{id}', [MataKuliahController::class, 'update'])->name('admin.akademik.matakuliah.update');
     Route::delete('/akademik/mata-kuliah/{id}', [MataKuliahController::class, 'destroy'])->name('admin.akademik.matakuliah.destroy');
+    // -> Jurnal Ilmiah
+    Route::get('/akademik/jurnal-ilmiah', [JurnalIlmiahController::class, 'index'])->name('admin.akademik.jurnal_ilmiah');
+    Route::post('/akademik/jurnal-ilmiah', [JurnalIlmiahController::class, 'store'])->name('admin.akademik.jurnal_ilmiah.store');
+    Route::put('/akademik/jurnal-ilmiah/{id}', [JurnalIlmiahController::class, 'update'])->name('admin.akademik.jurnal_ilmiah.update');
+    Route::delete('/akademik/jurnal-ilmiah/{id}', [JurnalIlmiahController::class, 'destroy'])->name('admin.akademik.jurnal_ilmiah.destroy');
     // -> Magang
     Route::get('/akademik/magang', [MagangController::class, 'index'])->name('admin.akademik.magang');
     Route::post('/akademik/magang', [MagangController::class, 'store'])->name('admin.akademik.magang.store');
@@ -256,6 +269,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('/kemahasiswaan/statistik', [StatistikController::class, 'update'])->name('admin.statistik.update');
 
     // Rute Seputar Prodi
+    // -> Capaian Dosen
+    Route::get('/prodi/capaian-dosen', [CapaianDosenController::class, 'index'])->name('admin.capaian_dosen.index');
+    Route::post('/prodi/capaian-dosen', [CapaianDosenController::class, 'store'])->name('admin.capaian_dosen.store');
+    Route::put('/prodi/capaian-dosen/{id}', [CapaianDosenController::class, 'update'])->name('admin.capaian_dosen.update');
+    Route::delete('/prodi/capaian-dosen/{id}', [CapaianDosenController::class, 'destroy'])->name('admin.capaian_dosen.destroy');
     // -> Berita
     Route::get('/prodi/berita', [BeritaController::class, 'index'])->name('admin.berita.index');
     Route::post('/prodi/berita', [BeritaController::class, 'store'])->name('admin.berita.store');

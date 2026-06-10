@@ -19,9 +19,9 @@ class MataKuliahController extends Controller
 
         // Pencarian
         if ($search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('kodeMK', 'like', '%' . $search . '%')
-                  ->orWhere('namaMK', 'like', '%' . $search . '%');
+                    ->orWhere('namaMK', 'like', '%' . $search . '%');
             });
         }
 
@@ -32,14 +32,14 @@ class MataKuliahController extends Controller
 
         // Filter Dosen dengan logika relasi Many-to-Many
         if ($filterDosen) {
-            $query->whereHas('tenagaPengajar', function($q) use ($filterDosen) {
+            $query->whereHas('tenagaPengajar', function ($q) use ($filterDosen) {
                 $q->where('tb_tenaga_pengajar.idTP', $filterDosen);
             });
         }
 
         $mataKuliah = $query->orderBy('semesterMK', 'asc')
-                            ->orderBy('namaMK', 'asc')
-                            ->get();
+            ->orderBy('namaMK', 'asc')
+            ->get();
 
         $listDosen = TenagaPengajar::orderBy('namaTP', 'asc')->get();
 
@@ -52,23 +52,23 @@ class MataKuliahController extends Controller
         return view('frontend.akademik.mata_kuliah', compact('mataKuliah', 'listDosen', 'stats'));
     }
 
-public function index(Request $request)
+    public function index(Request $request)
     {
         $query = MataKuliah::with(['tenagaPengajar']);
 
         // AMBIL SEMESTER YANG TERSEDIA SAJA (Hapus semester kosong dari navigasi)
         $availableSemesters = MataKuliah::distinct()
-                                        ->orderBy('semesterMK', 'asc')
-                                        ->pluck('semesterMK');
+            ->orderBy('semesterMK', 'asc')
+            ->pluck('semesterMK');
 
         $search = $request->input('search');
         $activeSemester = $request->input('semester', $availableSemesters->first() ?? 1);
 
         if ($search != '') {
             // Pencarian Global (Mengabaikan filter semester saat mencari)
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('kodeMK', 'like', '%' . $search . '%')
-                  ->orWhere('namaMK', 'like', '%' . $search . '%');
+                    ->orWhere('namaMK', 'like', '%' . $search . '%');
             });
         } else {
             // Filter semester hanya aktif jika TIDAK sedang mencari

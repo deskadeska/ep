@@ -12,6 +12,7 @@
         ],
         'Akademik' => [
             'Mata Kuliah' => url('/akademik/mata-kuliah'),
+            'Jurnal Ilmiah' => url('/akademik/jurnal-ilmiah'),
             'Magang' => url('/akademik/magang'),
             'Kalender Akademik' => url('/akademik/kalender'),
             'Panduan Akademik' => url('/akademik/panduan'),
@@ -19,13 +20,16 @@
             'Administrasi Akademik' => url('/akademik/administrasi'),
         ],
         'Kemahasiswaan' => [
+            'Tracer Study' => url('/kemahasiswaan/tracer-study'),
             'Alumni' => url('/kemahasiswaan/alumni'),
             'Prestasi' => url('/kemahasiswaan/prestasi'),
             'Bank Judul Skripsi' => url('/kemahasiswaan/bank-judul'),
             'Organisasi Mahasiswa' => url('/kemahasiswaan/organisasi-mahasiswa'),
         ],
         'Seputar Prodi' => [
+            'Capaian Dosen' => url('/prodi/capaian-dosen'),
             'Berita' => url('/prodi/berita'),
+            'Penelitian & Pengabdian' => url('/prodi/penelitian-pengabdian'),
             'Dokumentasi' => url('/prodi/dokumentasi'),
             'Video' => url('/prodi/video'),
             'Jadwal Kegiatan' => url('/prodi/jadwal-kegiatan')

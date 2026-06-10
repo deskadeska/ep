@@ -1,6 +1,7 @@
 <aside
     class="fixed top-0 left-0 w-64 h-screen bg-white border-r border-[#D1D5DB] overflow-y-auto flex flex-col z-40 shadow-sm transition-transform duration-300">
-    <a href="{{ url('admin/dashboard') }}" class="block sticky top-0 bg-white z-10 px-6 py-5 border-b border-[#D1D5DB] hover:bg-gray-50 transition-colors cursor-pointer">
+    <a href="{{ url('admin/dashboard') }}"
+        class="block sticky top-0 bg-white z-10 px-6 py-5 border-b border-[#D1D5DB] hover:bg-gray-50 transition-colors cursor-pointer">
         <h2 class="text-xl font-bold" style="color: var(--navy, #1E3A5F);">Admin Portal</h2>
         <p class="text-xs font-medium" style="color: var(--caption, #6B7280);">Ekonomi Pembangunan</p>
     </a>
@@ -18,6 +19,12 @@
                             'label' => 'Mata Kuliah',
                             'icon' =>
                                 '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />',
+                        ],
+                        [
+                            'url' => 'admin/akademik/jurnal-ilmiah',
+                            'label' => 'Jurnal Ilmiah',
+                            'icon' =>
+                                '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25M12 6.042V20.25c0 .248-.046.488-.13.71A8.985 8.985 0 016 21h12a8.985 8.985 0 01-5.87-2.04c-.084-.222-.13-.462-.13-.71" />',
                         ],
                         [
                             'url' => 'admin/akademik/magang',
@@ -174,6 +181,12 @@
             <ul class="space-y-1">
                 @php
                     $menusProdi = [
+                        [
+                            'url' => 'admin/prodi/capaian-dosen',
+                            'label' => 'Capaian Dosen',
+                            'icon' =>
+                                '<path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />',
+                        ],
                         [
                             'url' => 'admin/prodi/berita',
                             'label' => 'Berita',
