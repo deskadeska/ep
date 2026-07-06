@@ -8,34 +8,17 @@ use Illuminate\Support\Facades\File;
 
 class JurnalIlmiahController extends Controller
 {
-    // Fungsi untuk Pengunjung (Frontend)
-    public function frontendIndex(Request $request)
+    public function frontendIndex()
     {
-        $search = $request->input('search');
-        $query = JurnalIlmiah::query();
-
-        if ($search) {
-            $query->where('namaJI', 'like', '%' . $search . '%');
-        }
-
-        // Paginate 10 data
-        $jurnalIlmiah = $query->orderBy('idJI', 'desc')->paginate(10);
+        // Mengambil semua data jurnal ilmiah
+        $jurnalIlmiah = JurnalIlmiah::orderBy('idJI', 'desc')->get();
 
         return view('frontend.akademik.jurnal_ilmiah', compact('jurnalIlmiah'));
     }
 
-    // Fungsi untuk Admin (Backend)
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $query = JurnalIlmiah::query();
-
-        if ($search != '') {
-            $query->where('namaJI', 'like', '%' . $search . '%');
-        }
-
-        $jurnalIlmiah = $query->orderBy('idJI', 'desc')->get();
-
+        $jurnalIlmiah = JurnalIlmiah::orderBy('idJI', 'desc')->get();
         return view('admin.akademik.jurnal_ilmiah', compact('jurnalIlmiah'));
     }
 
@@ -44,27 +27,27 @@ class JurnalIlmiahController extends Controller
         $request->validate([
             'namaJI'   => 'required|string|max:255',
             'linkJI'   => 'required|url|max:255',
-            'sampulJI' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120', // Wajib upload gambar, maks 5MB
+            'sampulJI' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
 
-        $namaFile = null;
-        if ($request->hasFile('sampulJI')) {
-            $file = $request->file('sampulJI');
-            $namaFile = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+        $sampulName = null;
 
-            // PERBAIKAN: Cek dan buat direktori otomatis jika belum ada di server production
+        // Upload Sampul
+        if ($request->hasFile('sampulJI')) {
+            $fileSampul = $request->file('sampulJI');
+            $sampulName = time() . '_sampul_' . uniqid() . '.' . $fileSampul->getClientOriginalExtension();
+
             $destinationPath = public_path('assets/admin/uploads/jurnal');
             if (!File::isDirectory($destinationPath)) {
                 File::makeDirectory($destinationPath, 0755, true, true);
             }
-
-            $file->move($destinationPath, $namaFile);
+            $fileSampul->move($destinationPath, $sampulName);
         }
 
         JurnalIlmiah::create([
             'namaJI'   => $request->namaJI,
             'linkJI'   => $request->linkJI,
-            'sampulJI' => $namaFile,
+            'sampulJI' => $sampulName
         ]);
 
         return back()->with('success', 'Data Jurnal Ilmiah berhasil ditambahkan.');
@@ -77,7 +60,7 @@ class JurnalIlmiahController extends Controller
         $request->validate([
             'namaJI'   => 'required|string|max:255',
             'linkJI'   => 'required|url|max:255',
-            'sampulJI' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Opsional saat edit
+            'sampulJI' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
 
         $dataUpdate = [
@@ -85,25 +68,22 @@ class JurnalIlmiahController extends Controller
             'linkJI' => $request->linkJI,
         ];
 
-        // Jika admin mengganti sampul
+        // Update Sampul
         if ($request->hasFile('sampulJI')) {
-            // Hapus sampul lama jika file fisiknya ada
             if ($ji->sampulJI && File::exists(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI))) {
                 File::delete(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI));
             }
 
-            $file = $request->file('sampulJI');
-            $namaFile = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $fileSampul = $request->file('sampulJI');
+            $sampulNameBaru = time() . '_sampul_' . uniqid() . '.' . $fileSampul->getClientOriginalExtension();
 
-            // PERBAIKAN: Cek dan buat direktori otomatis
             $destinationPath = public_path('assets/admin/uploads/jurnal');
             if (!File::isDirectory($destinationPath)) {
                 File::makeDirectory($destinationPath, 0755, true, true);
             }
+            $fileSampul->move($destinationPath, $sampulNameBaru);
 
-            $file->move($destinationPath, $namaFile);
-
-            $dataUpdate['sampulJI'] = $namaFile;
+            $dataUpdate['sampulJI'] = $sampulNameBaru;
         }
 
         $ji->update($dataUpdate);
@@ -115,7 +95,7 @@ class JurnalIlmiahController extends Controller
     {
         $ji = JurnalIlmiah::findOrFail($id);
 
-        // Hapus file sampul
+        // Hapus file Sampul
         if ($ji->sampulJI && File::exists(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI))) {
             File::delete(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI));
         }
