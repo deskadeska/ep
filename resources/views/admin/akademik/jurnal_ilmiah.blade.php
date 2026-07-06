@@ -68,7 +68,7 @@
                     <td class="p-4">
                         @if($ji->sampulJI)
                             <a href="{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}" target="_blank" class="block w-20 h-24 mx-auto rounded border border-gray-200 shadow-sm overflow-hidden bg-gray-100 hover:opacity-80 transition">
-                                <img src="{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}" alt="Sampul" class="w-full h-full object-cover">
+                                <img src="{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}" alt="Sampul" class="w-full h-full object-contain bg-white">
                             </a>
                         @else
                             <div class="w-20 h-24 mx-auto rounded border border-dashed border-gray-300 bg-gray-50 flex items-center justify-center text-gray-400">
@@ -84,11 +84,12 @@
                         <div class="text-xs text-gray-500 mt-1">{{ $ji->linkJI }}</div>
                     </td>
                     <td class="p-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+                        <!-- Tombol Edit -->
                         <button type="button" data-jurnal="{{ json_encode($ji) }}" onclick="openEditModal(this)" class="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition" title="Edit">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
                         </button>
 
-                        <!-- PENTING: Ubah URL Route Hapus ini sesuai web.php Anda (misal admin.akademik.jurnal_ilmiah.destroy) -->
+                        <!-- Tombol Hapus -->
                         <form action="{{ route('admin.akademik.jurnal_ilmiah.destroy', $ji->idJI) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus jurnal ini beserta file gambarnya?');">
                             @csrf
                             @method('DELETE')
@@ -123,8 +124,6 @@
             <button onclick="closeModal('modalTambah')" class="text-gray-400 hover:text-gray-600">&times;</button>
         </div>
 
-        <!-- ENCTYPE MULTIPART WAJIB ADA UNTUK UPLOAD FILE -->
-        <!-- PENTING: Ubah URL Route Store ini sesuai web.php Anda -->
         <form action="{{ route('admin.akademik.jurnal_ilmiah.store') }}" method="POST" enctype="multipart/form-data" class="overflow-y-auto">
             @csrf
             <div class="p-6 space-y-4">
@@ -209,8 +208,11 @@
         let ji = JSON.parse(button.getAttribute('data-jurnal'));
 
         let form = document.getElementById('formEdit');
-        // PENTING: Pastikan URL /admin/akademik/jurnal-ilmiah ini sesuai dengan struktur web.php Anda
-        form.action = `/admin/akademik/jurnal-ilmiah/${ji.idJI}`;
+
+        // Memanfaatkan helper route Laravel agar URL dinamis dan menghindari error 404/500
+        let url = "{{ route('admin.akademik.jurnal_ilmiah.update', ':id') }}";
+        url = url.replace(':id', ji.idJI);
+        form.action = url;
 
         document.getElementById('edit_nama').value = ji.namaJI;
         document.getElementById('edit_link').value = ji.linkJI;
