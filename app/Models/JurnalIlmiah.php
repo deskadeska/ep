@@ -13,24 +13,13 @@ class JurnalIlmiah extends Model
     protected $table = 'tb_jurnal_ilmiah';
     protected $primaryKey = 'idJI';
 
-    // idTP sudah tidak ada di tabel ini
     protected $fillable = [
-        'judulJI', 'jurnalPenerbitJI', 'namaMahasiswaJI', 'abstrakJI', 'keywordJI', 'tahunPublikasiJI', 'doiJI'
+        'namaJI', 'linkJI', 'sampulJI'
     ];
 
     /**
-     * Relasi Many-to-Many ke Tenaga Pengajar
+     * Konfigurasi Log Aktivitas Spatie
      */
-    public function tenagaPengajar()
-    {
-        return $this->belongsToMany(
-            TenagaPengajar::class,
-            'r_penulis_jurnal_ilmiah',
-            'idJI',
-            'idTP'
-        )->withPivot('idRPJI', 'rolePenulis')->withTimestamps();
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

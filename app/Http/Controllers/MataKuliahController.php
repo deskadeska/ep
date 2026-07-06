@@ -11,8 +11,12 @@ class MataKuliahController extends Controller
     public function frontendIndex(Request $request)
     {
         $search = $request->input('search');
-        $filterSemester = $request->input('semester');
         $filterDosen = $request->input('dosen');
+
+        // Cari nilai semester paling kecil (default ke 1 jika data kosong)
+        $minSemester = MataKuliah::min('semesterMK') ?? 1;
+        // Jadikan semester terkecil sebagai nilai default jika request 'semester' kosong
+        $activeSemester = $request->input('semester', $minSemester);
 
         // Gunakan relasi terbaru (tenagaPengajar)
         $query = MataKuliah::with(['tenagaPengajar']);
@@ -25,10 +29,8 @@ class MataKuliahController extends Controller
             });
         }
 
-        // Filter Semester
-        if ($filterSemester) {
-            $query->where('semesterMK', $filterSemester);
-        }
+        // Filter Semester selalu aktif (ke semester pilihan atau semester terkecil)
+        $query->where('semesterMK', $activeSemester);
 
         // Filter Dosen dengan logika relasi Many-to-Many
         if ($filterDosen) {
@@ -49,7 +51,8 @@ class MataKuliahController extends Controller
             'total_semester' => MataKuliah::max('semesterMK') ?? 8,
         ];
 
-        return view('frontend.akademik.mata_kuliah', compact('mataKuliah', 'listDosen', 'stats'));
+        // Pastikan variabel $activeSemester dikirim ke View
+        return view('frontend.akademik.mata_kuliah', compact('mataKuliah', 'listDosen', 'stats', 'activeSemester'));
     }
 
     public function index(Request $request)

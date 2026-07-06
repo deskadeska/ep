@@ -87,6 +87,14 @@ return new class extends Migration
                 ->constrained('tb_tahun_ajaran', 'idTA')
                 ->nullOnDelete();
         });
+
+        Schema::create('tb_jurnal_ilmiah', function (Blueprint $table) {
+            $table->id('idJI');
+            $table->string('namaJI');
+            $table->string('linkJI');
+            $table->string('sampulJI');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -103,5 +111,6 @@ return new class extends Migration
         Schema::dropIfExists('tb_detail_keperluan_tugas_akhir');
         Schema::dropIfExists('tb_administrasi_akademik');
         Schema::dropIfExists('tb_statistik');
+        Schema::dropIfExists('tb_jurnal_ilmiah');
     }
 };

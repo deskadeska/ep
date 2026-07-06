@@ -4,116 +4,61 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\JurnalIlmiah;
-use App\Models\TenagaPengajar;
+use Illuminate\Support\Facades\File;
 
 class JurnalIlmiahController extends Controller
 {
+    // Fungsi untuk Pengunjung (Frontend)
     public function frontendIndex(Request $request)
     {
         $search = $request->input('search');
-        $filterTahun = $request->input('tahun');
+        $query = JurnalIlmiah::query();
 
-        // Memuat relasi tenagaPengajar (Many-to-Many)
-        $query = JurnalIlmiah::with('tenagaPengajar');
-
-        // Pencarian berdasarkan judul atau keyword
         if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('judulJI', 'like', '%' . $search . '%')
-                  ->orWhere('keywordJI', 'like', '%' . $search . '%');
-            });
+            $query->where('namaJI', 'like', '%' . $search . '%');
         }
 
-        // Filter berdasarkan tahun terbit
-        if ($filterTahun) {
-            $query->where('tahunPublikasiJI', $filterTahun);
-        }
+        // Paginate 10 data
+        $jurnalIlmiah = $query->orderBy('idJI', 'desc')->paginate(10);
 
-        // Mengambil daftar tahun unik untuk opsi filter di frontend
-        $listTahun = JurnalIlmiah::select('tahunPublikasiJI')
-                                 ->distinct()
-                                 ->orderBy('tahunPublikasiJI', 'desc')
-                                 ->pluck('tahunPublikasiJI');
-
-        // Diurutkan dari yang terbaru dan paginate 10
-        $jurnalIlmiah = $query->orderBy('tahunPublikasiJI', 'desc')
-                              ->orderBy('judulJI', 'asc')
-                              ->paginate(10);
-
-        return view('frontend.akademik.jurnal_ilmiah', compact('jurnalIlmiah', 'listTahun', 'filterTahun'));
+        return view('frontend.akademik.jurnal_ilmiah', compact('jurnalIlmiah'));
     }
 
+    // Fungsi untuk Admin (Backend)
     public function index(Request $request)
     {
-        $query = JurnalIlmiah::with('tenagaPengajar');
         $search = $request->input('search');
+        $query = JurnalIlmiah::query();
 
         if ($search != '') {
-            $query->where(function ($q) use ($search) {
-                $q->where('judulJI', 'like', '%' . $search . '%')
-                  ->orWhere('jurnalPenerbitJI', 'like', '%' . $search . '%')
-                  ->orWhere('keywordJI', 'like', '%' . $search . '%')
-                  ->orWhere('namaMahasiswaJI', 'like', '%' . $search . '%');
-            });
+            $query->where('namaJI', 'like', '%' . $search . '%');
         }
 
-        $sortBy = $request->input('sort_by', 'tahunPublikasiJI');
-        $sortOrder = $request->input('sort_order', 'desc');
+        $jurnalIlmiah = $query->orderBy('idJI', 'desc')->get();
 
-        if (in_array($sortBy, ['judulJI', 'tahunPublikasiJI'])) {
-            $query->orderBy($sortBy, $sortOrder);
-        }
-
-        $jurnalIlmiah = $query->get();
-        $dosen = TenagaPengajar::orderBy('namaTP', 'asc')->get();
-
-        return view('admin.akademik.jurnal_ilmiah', compact('jurnalIlmiah', 'dosen'));
+        return view('admin.akademik.jurnal_ilmiah', compact('jurnalIlmiah'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'judulJI'          => 'required|string|max:255',
-            'jurnalPenerbitJI' => 'required|string|max:255',
-            'tahunPublikasiJI' => 'required|integer|digits:4',
-            'keywordJI'        => 'required|string|max:255',
-            'doiJI'            => 'required|string|max:255|unique:tb_jurnal_ilmiah,doiJI',
-            'abstrakJI'        => 'required|string',
-            'idTP'             => 'nullable|array',
-            'idTP.*'           => 'nullable|exists:tb_tenaga_pengajar,idTP',
-            'rolePenulis'      => 'nullable|array', // Validasi array role
-            'namaMahasiswaJI'  => 'nullable|array',
-            'namaMahasiswaJI.*'=> 'nullable|string|max:255',
+            'namaJI'   => 'required|string|max:255',
+            'linkJI'   => 'required|url|max:255',
+            'sampulJI' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120', // Wajib upload gambar
         ]);
 
-        $mahasiswaList = array_filter($request->namaMahasiswaJI ?? []);
-        $dosenList = array_filter($request->idTP ?? []);
-
-        if (empty($mahasiswaList) && empty($dosenList)) {
-            return back()->withErrors(['penulis' => 'Minimal salah satu penulis (Dosen atau Mahasiswa) wajib diisi.'])->withInput();
+        $namaFile = null;
+        if ($request->hasFile('sampulJI')) {
+            $file = $request->file('sampulJI');
+            $namaFile = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $file->move(public_path('assets/admin/uploads/jurnal'), $namaFile);
         }
 
-        // Hapus 'idTP' dari create karena sudah dipindah ke tabel pivot
-        $ji = JurnalIlmiah::create([
-            'judulJI'          => $request->judulJI,
-            'jurnalPenerbitJI' => $request->jurnalPenerbitJI,
-            'tahunPublikasiJI' => $request->tahunPublikasiJI,
-            'keywordJI'        => $request->keywordJI,
-            'doiJI'            => $request->doiJI,
-            'abstrakJI'        => $request->abstrakJI,
-            'namaMahasiswaJI'  => !empty($mahasiswaList) ? json_encode(array_values($mahasiswaList)) : null,
+        JurnalIlmiah::create([
+            'namaJI'   => $request->namaJI,
+            'linkJI'   => $request->linkJI,
+            'sampulJI' => $namaFile,
         ]);
-
-        // Simpan relasi Many-to-Many ke tabel pivot
-        if (!empty($dosenList)) {
-            $syncData = [];
-            foreach ($request->idTP as $index => $idTP) {
-                if ($idTP) {
-                    $syncData[$idTP] = ['rolePenulis' => $request->rolePenulis[$index] ?? 'Penulis Anggota'];
-                }
-            }
-            $ji->tenagaPengajar()->sync($syncData);
-        }
 
         return back()->with('success', 'Data Jurnal Ilmiah berhasil ditambahkan.');
     }
@@ -123,49 +68,31 @@ class JurnalIlmiahController extends Controller
         $ji = JurnalIlmiah::findOrFail($id);
 
         $request->validate([
-            'judulJI'          => 'required|string|max:255',
-            'jurnalPenerbitJI' => 'required|string|max:255',
-            'tahunPublikasiJI' => 'required|integer|digits:4',
-            'keywordJI'        => 'required|string|max:255',
-            'doiJI'            => 'required|string|max:255|unique:tb_jurnal_ilmiah,doiJI,' . $id . ',idJI',
-            'abstrakJI'        => 'required|string',
-            'idTP'             => 'nullable|array',
-            'idTP.*'           => 'nullable|exists:tb_tenaga_pengajar,idTP',
-            'rolePenulis'      => 'nullable|array',
-            'namaMahasiswaJI'  => 'nullable|array',
-            'namaMahasiswaJI.*'=> 'nullable|string|max:255',
+            'namaJI'   => 'required|string|max:255',
+            'linkJI'   => 'required|url|max:255',
+            'sampulJI' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // Opsional saat edit
         ]);
 
-        $mahasiswaList = array_filter($request->namaMahasiswaJI ?? []);
-        $dosenList = array_filter($request->idTP ?? []);
+        $dataUpdate = [
+            'namaJI' => $request->namaJI,
+            'linkJI' => $request->linkJI,
+        ];
 
-        if (empty($mahasiswaList) && empty($dosenList)) {
-            return back()->withErrors(['penulis' => 'Minimal salah satu penulis (Dosen atau Mahasiswa) wajib diisi.'])->withInput();
-        }
-
-        $ji->update([
-            'judulJI'          => $request->judulJI,
-            'jurnalPenerbitJI' => $request->jurnalPenerbitJI,
-            'tahunPublikasiJI' => $request->tahunPublikasiJI,
-            'keywordJI'        => $request->keywordJI,
-            'doiJI'            => $request->doiJI,
-            'abstrakJI'        => $request->abstrakJI,
-            'namaMahasiswaJI'  => !empty($mahasiswaList) ? json_encode(array_values($mahasiswaList)) : null,
-        ]);
-
-        // Simpan pembaruan relasi Many-to-Many ke tabel pivot
-        if (!empty($dosenList)) {
-            $syncData = [];
-            foreach ($request->idTP as $index => $idTP) {
-                if ($idTP) {
-                    $syncData[$idTP] = ['rolePenulis' => $request->rolePenulis[$index] ?? 'Penulis Anggota'];
-                }
+        // Jika admin mengganti sampul
+        if ($request->hasFile('sampulJI')) {
+            // Hapus sampul lama
+            if ($ji->sampulJI && File::exists(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI))) {
+                File::delete(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI));
             }
-            $ji->tenagaPengajar()->sync($syncData);
-        } else {
-            // Jika dosen dikosongkan secara keseluruhan saat edit
-            $ji->tenagaPengajar()->sync([]);
+
+            $file = $request->file('sampulJI');
+            $namaFile = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $file->move(public_path('assets/admin/uploads/jurnal'), $namaFile);
+
+            $dataUpdate['sampulJI'] = $namaFile;
         }
+
+        $ji->update($dataUpdate);
 
         return back()->with('success', 'Data Jurnal Ilmiah berhasil diperbarui.');
     }
@@ -173,7 +100,14 @@ class JurnalIlmiahController extends Controller
     public function destroy($id)
     {
         $ji = JurnalIlmiah::findOrFail($id);
-        $ji->delete(); // Otomatis menghapus relasi di tabel pivot berkat cascadeOnDelete di database
+
+        // Hapus file sampul
+        if ($ji->sampulJI && File::exists(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI))) {
+            File::delete(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI));
+        }
+
+        $ji->delete();
+
         return back()->with('success', 'Data Jurnal Ilmiah berhasil dihapus.');
     }
 }

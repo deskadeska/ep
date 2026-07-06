@@ -112,9 +112,8 @@
                         class="w-full pl-8 pr-2 py-2 bg-transparent border-transparent focus:border-transparent focus:ring-0 outline-none text-sm text-[var(--dark-neutral)] placeholder-gray-400">
                 </div>
 
-                @if (request('semester'))
-                    <input type="hidden" name="semester" value="{{ request('semester') }}">
-                @endif
+                <!-- Input Hidden ini agar pencarian tetap berada di semester yang sedang aktif -->
+                <input type="hidden" name="semester" value="{{ $activeSemester }}">
 
                 <div class="relative w-full md:w-60 px-4 py-2 group">
                     <select name="dosen"
@@ -149,16 +148,12 @@
 
     <section class="max-w-7xl mx-auto px-4 mb-4">
         <div class="flex overflow-x-auto custom-scrollbar gap-3 pb-3 reveal active">
-            <a href="{{ request()->fullUrlWithQuery(['semester' => null]) }}"
-                class="px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm
-               {{ !request('semester') ? 'bg-[var(--primary)] text-white' : 'bg-white text-[var(--medium-neutral)] border border-gray-200 hover:bg-gray-50' }}">
-                Semua Semester
-            </a>
+            <!-- Anchor "Semua Semester" telah dihapus sesuai permintaan -->
 
             @for ($i = 1; $i <= $stats['total_semester']; $i++)
                 <a href="{{ request()->fullUrlWithQuery(['semester' => $i]) }}"
                     class="px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm
-                   {{ request('semester') == $i ? 'bg-[var(--primary)] text-white' : 'bg-white text-[var(--medium-neutral)] border border-gray-200 hover:bg-gray-50' }}">
+                   {{ $activeSemester == $i ? 'bg-[var(--primary)] text-white' : 'bg-white text-[var(--medium-neutral)] border border-gray-200 hover:bg-gray-50' }}">
                     Semester {{ $i }}
                 </a>
             @endfor
@@ -188,7 +183,6 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($mataKuliah as $index => $mk)
-                            {{-- 3. Batas baris diperjelas dengan efek belang-belang (Zebra Striping) menggunakan bg-white dan even:bg-gray-50 --}}
                             <tr
                                 class="bg-white even:bg-[var(--light-neutral)]/60 hover:bg-[var(--light-neutral)] transition duration-150 group">
                                 <td class="py-4 px-6 text-center text-sm font-medium"
@@ -219,7 +213,6 @@
                                 <td class="py-4 px-6">
                                     <div class="space-y-2">
                                         @forelse ($mk->tenagaPengajar as $dosen)
-                                            {{-- 1 & 2. Penomoran dihapus, format diubah menjadi: Nama Dosen (Peran) --}}
                                             <div class="text-sm font-medium leading-snug"
                                                 style="color: var(--dark-neutral);">
                                                 <span>{{ $dosen->namaTP }} {{ $dosen->gelarTP }}</span>
