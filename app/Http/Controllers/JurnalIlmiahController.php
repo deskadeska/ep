@@ -44,14 +44,21 @@ class JurnalIlmiahController extends Controller
         $request->validate([
             'namaJI'   => 'required|string|max:255',
             'linkJI'   => 'required|url|max:255',
-            'sampulJI' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120', // Wajib upload gambar
+            'sampulJI' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120', // Wajib upload gambar, maks 5MB
         ]);
 
         $namaFile = null;
         if ($request->hasFile('sampulJI')) {
             $file = $request->file('sampulJI');
             $namaFile = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move(public_path('assets/admin/uploads/jurnal'), $namaFile);
+
+            // PERBAIKAN: Cek dan buat direktori otomatis jika belum ada di server production
+            $destinationPath = public_path('assets/admin/uploads/jurnal');
+            if (!File::isDirectory($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+
+            $file->move($destinationPath, $namaFile);
         }
 
         JurnalIlmiah::create([
@@ -80,14 +87,21 @@ class JurnalIlmiahController extends Controller
 
         // Jika admin mengganti sampul
         if ($request->hasFile('sampulJI')) {
-            // Hapus sampul lama
+            // Hapus sampul lama jika file fisiknya ada
             if ($ji->sampulJI && File::exists(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI))) {
                 File::delete(public_path('assets/admin/uploads/jurnal/' . $ji->sampulJI));
             }
 
             $file = $request->file('sampulJI');
             $namaFile = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
-            $file->move(public_path('assets/admin/uploads/jurnal'), $namaFile);
+
+            // PERBAIKAN: Cek dan buat direktori otomatis
+            $destinationPath = public_path('assets/admin/uploads/jurnal');
+            if (!File::isDirectory($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true, true);
+            }
+
+            $file->move($destinationPath, $namaFile);
 
             $dataUpdate['sampulJI'] = $namaFile;
         }
