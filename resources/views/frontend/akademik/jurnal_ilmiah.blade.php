@@ -56,7 +56,6 @@
 
     @include('frontend.layout.navbar')
 
-    <!-- HERO SECTION -->
     <section class="pt-32 pb-20 px-4 relative bg-cover bg-center bg-no-repeat"
         style="background-image: url('{{ asset('assets/backrounds/backround_hero.jpg') }}');">
         <div class="absolute inset-0 bg-[#1E3A5F]/80 backdrop-blur-[1px]"></div>
@@ -70,34 +69,26 @@
         </div>
     </section>
 
-    <!-- KONTEN UTAMA -->
     <section class="py-16 px-4">
         <div class="max-w-5xl mx-auto">
 
-            <!-- Grid Layout (1 Kolom Mobile, 2 Kolom PC) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
                 @forelse($jurnalIlmiah as $ji)
-
-                    <!-- Card Interaktif: Keseluruhan Card adalah Tautan (a tag) -->
+                    
                     <a href="{{ $ji->linkJI }}" target="_blank" rel="noopener noreferrer" class="group flex flex-col bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden card-hover reveal active">
-
-                        <!-- Area Gambar Sampul -->
+                        
                         <div class="w-full bg-gray-50 py-10 px-6 flex items-center justify-center relative border-b border-gray-100 overflow-hidden">
-
+                            
                             @if($ji->sampulJI)
-                                <!-- Gambar Utama: object-contain menjaga rasio asli tanpa memotong gambar -->
                                 <img src="{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}" alt="Sampul {{ $ji->namaJI }}" class="h-48 md:h-56 w-auto object-contain drop-shadow-md rounded-sm transition-transform duration-700 group-hover:scale-105 relative z-10">
-
-                                <!-- Efek Estetika: Latar belakang blur menggunakan gambar yang sama -->
+                                
                                 <div class="absolute inset-0 bg-cover bg-center opacity-10 blur-2xl scale-110" style="background-image: url('{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}');"></div>
                             @else
-                                <!-- Placeholder jika tidak ada sampul -->
                                 <div class="h-48 md:h-56 w-36 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 bg-white relative z-10">
                                     <svg class="w-12 h-12 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                 </div>
                             @endif
 
-                            <!-- Overlay Tombol Buka Tautan saat di-hover -->
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6 z-20">
                                 <span class="bg-white/95 backdrop-blur-sm text-[var(--primary)] px-5 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                                     Buka Tautan Jurnal <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
@@ -105,7 +96,6 @@
                             </div>
                         </div>
 
-                        <!-- Area Info Nama Jurnal -->
                         <div class="p-6 md:p-8 text-center bg-white flex-1 flex flex-col justify-center relative z-10">
                             <h3 class="text-xl md:text-2xl font-bold text-[var(--primary)] group-hover:text-[var(--secondary)] transition-colors line-clamp-2 leading-snug">
                                 {{ $ji->namaJI }}
@@ -127,7 +117,6 @@
                 @endforelse
             </div>
 
-            <!-- Pagination -->
             @if($jurnalIlmiah->hasPages())
                 <div class="mt-12 reveal active">
                     {{ $jurnalIlmiah->links() }}
@@ -148,7 +137,7 @@
                 }
             });
         }, { threshold: 0.1 });
-
+        
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 
