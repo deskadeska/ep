@@ -74,14 +74,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
                 @forelse($jurnalIlmiah as $ji)
-                    
+
                     <a href="{{ $ji->linkJI }}" target="_blank" rel="noopener noreferrer" class="group flex flex-col bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden card-hover reveal active">
-                        
+
                         <div class="w-full bg-gray-50 py-10 px-6 flex items-center justify-center relative border-b border-gray-100 overflow-hidden">
-                            
+
                             @if($ji->sampulJI)
                                 <img src="{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}" alt="Sampul {{ $ji->namaJI }}" class="h-48 md:h-56 w-auto object-contain drop-shadow-md rounded-sm transition-transform duration-700 group-hover:scale-105 relative z-10">
-                                
+
                                 <div class="absolute inset-0 bg-cover bg-center opacity-10 blur-2xl scale-110" style="background-image: url('{{ asset('assets/admin/uploads/jurnal/' . $ji->sampulJI) }}');"></div>
                             @else
                                 <div class="h-48 md:h-56 w-36 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 bg-white relative z-10">
@@ -117,12 +117,6 @@
                 @endforelse
             </div>
 
-            @if($jurnalIlmiah->hasPages())
-                <div class="mt-12 reveal active">
-                    {{ $jurnalIlmiah->links() }}
-                </div>
-            @endif
-
         </div>
     </section>
 
@@ -137,7 +131,7 @@
                 }
             });
         }, { threshold: 0.1 });
-        
+
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 
